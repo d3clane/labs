@@ -46,37 +46,45 @@ Array* ArrayDtor(Array* arr)
     return NULL;
 }
 
-Array* ArrayPushBack(Array* arr, void* val)
+int ArrayPushBack(Array* arr, void* val)
 {
     assert(arr->size <= arr->capacity);
 
     if (arr->size == arr->capacity)
-        arr = ArraySizeIncrease(arr);
+        if (ArraySizeIncrease(arr) == NULL) 
+            return 0;
 
     ArraySetVal(arr, arr->size, val);
 
     arr->size++;
 
-    return arr;
+    return 1;
 }
 
-Array* ArrayPopBack (Array* arr)
+int ArrayPopBack (Array* arr)
 {
     if (arr->size * 4 <= arr->capacity)
         arr = ArraySizeDecrease(arr);
     
+    if (arr->size == 0)
+        return 0;
+    
     arr->size--;
 
-    return arr;
+    return 1;
 }
 
 void* ArrayGetVal(Array* arr, size_t index)
 {
+    assert(index < arr->size);
+
     return arr->data + ArrayGetDataIndex(arr, index);
 }
 
 Array* ArraySetVal(Array* arr, size_t index, void* val)
 {
+    assert(index < arr->capacity);
+
     memcpy(ArrayGetVal(arr, index), val, arr->elemSize);
 
     return arr;
@@ -84,6 +92,8 @@ Array* ArraySetVal(Array* arr, size_t index, void* val)
 
 static size_t ArrayGetDataIndex(Array* arr, size_t index)
 {
+    assert(index < arr->size);
+    
     return index * arr->elemSize;
 }
 
@@ -92,9 +102,13 @@ static Array* ArraySizeIncrease(Array* arr)
     assert(arr->size == arr->capacity);
 
     arr->capacity *= 2;
-    arr->data = realloc(arr, arr->capacity * arr->elemSize);
 
-    return arr;
+    void* tmp = realloc(arr, arr->capacity * arr->elemSize);
+
+    if (tmp != NULL)
+        arr->data = tmp;
+
+    return tmp;
 }
 
 static Array* ArraySizeDecrease(Array* arr)

@@ -16,8 +16,8 @@ Array  ArrayCtor();
 Array  ArrayInit(size_t size, size_t elemSize);
 Array* ArrayDtor(Array* arr);
 
-Array* ArrayPushBack(Array* arr, void* val);
-Array* ArrayPopBack (Array* arr);
+int ArrayPushBack(Array* arr, void* val);
+int ArrayPopBack (Array* arr);
 
 void*  ArrayGetVal(Array* arr, size_t index);
 Array* ArraySetVal(Array* arr, size_t index, void* val);
