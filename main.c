@@ -5,41 +5,36 @@
 
 int main()
 {
-    StackOnArr* stk1 = StackOnArrCtor(8, sizeof(int));
+    StackOnList* stk1 = StackOnListCtor(sizeof(int));
 
     int a = 5;
-    StackOnArrPush(stk1, &a);
-    printf("%d\n", stk1->data.size);
+    StackOnListPush(stk1, &a);
     a = 7;
-    StackOnArrPush(stk1, &a);
-    printf("%d\n", stk1->data.size);
+    StackOnListPush(stk1, &a);
     a = 9;
-    StackOnArrPush(stk1, &a);
-    printf("%d\n", stk1->data.size);
+    StackOnListPush(stk1, &a);
     a = 1;
-    StackOnArrPush(stk1, &a);
-    printf("%d\n", stk1->data.size);
+    StackOnListPush(stk1, &a);
     a = -5;
-    StackOnArrPush(stk1, &a);
-    printf("%d\n", stk1->data.size);
+    StackOnListPush(stk1, &a);
 
     int b = 78;
-    StackOnArrTop(stk1, &b);
+    StackOnListTop(stk1, &b);
     printf("%d\n", b);
 
-    StackOnArrPop(stk1);
-    StackOnArrTop(stk1, &b);
+    StackOnListPop(stk1);
+    StackOnListTop(stk1, &b);
     printf("%d\n", b);
 
-    StackOnArrPop(stk1);
-    StackOnArrTop(stk1, &b);
+    StackOnListPop(stk1);
+    StackOnListTop(stk1, &b);
     printf("%d\n", b);
 
-    StackOnArrPop(stk1);
-    StackOnArrTop(stk1, &b);
+    StackOnListPop(stk1);
+    StackOnListTop(stk1, &b);
     printf("%d\n", b);
 
-    StackOnArrPop(stk1);
-    StackOnArrTop(stk1, &b);
+    StackOnListPop(stk1);
+    StackOnListTop(stk1, &b);
     printf("%d\n", b);
 }

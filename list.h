@@ -19,8 +19,8 @@ typedef struct List
 List  ListCtor();
 List* ListDtor(List* list);
 
-ListElem* ListInsert  (List* list, ListElem* anchorElement, void* val, size_t valSize);
-int ListPopHead (List* list);
+ListElem* ListInsert(List* list, ListElem* anchorElement, void* val, size_t valSize);
+int ListPopHead     (List* list);
 
 void* ListGetVal(ListElem* elem);
 

@@ -99,15 +99,15 @@ static ListElem* ListElemDtor(ListElem* elem)
 static ListElem* ListElemInit(void* val, size_t valSize, ListElem* next)
 {
     assert(val);
-    assert(next);
-    
+
     ListElem* elem = ListElemCtor();
 
     if (elem == NULL)
         return NULL;
 
-    elem->value    = calloc(1, valSize);
-    memcpy(val, elem->value, valSize);
+    elem->value     = calloc(1, valSize);
+    elem->valueSize = valSize;
+    memcpy(elem->value, val, valSize);
 
     elem->nextElem = next;
 

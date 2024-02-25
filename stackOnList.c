@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 StackOnList* StackOnListCtor(size_t elemSize)
 {
@@ -29,6 +30,8 @@ int StackOnListPush(StackOnList* stk, void* buffer)
     assert(stk);
     assert(buffer);
 
+    printf("ELEM1 size - %zu, val - %d\n", stk->elemSize, *(int*)buffer);
+    
     ListElem* elem = ListInsert(&stk->data, stk->data.begin, buffer, stk->elemSize);
 
     return elem == NULL ? 0 : 1;
@@ -44,7 +47,9 @@ int StackOnListTop (StackOnList* stk, void* buffer)
     if (elem == NULL)
         return 0;
     
-    buffer = ListGetVal(elem);
+    printf("ELEM SIZE - %zu\n", elem->valueSize);
+
+    memcpy(buffer, ListGetVal(elem), elem->valueSize);
 
     return 1;
 }
