@@ -6,7 +6,7 @@
 
 StackOnArr* StackOnArrCtor(size_t size, size_t elemSize)
 {
-    StackOnArr* stk = calloc(1, sizeof(*stk));
+    StackOnArr* stk = (StackOnArr*)calloc(1, sizeof(*stk));
     stk->data = ArrayInit(size, elemSize);
 
     return stk;

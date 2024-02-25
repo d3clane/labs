@@ -8,7 +8,7 @@ typedef struct ListElem
     void* value;
     size_t valueSize;
 
-    ListElem* nextElem;
+    struct ListElem* nextElem;
 } ListElem;
 
 typedef struct List

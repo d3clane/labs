@@ -29,7 +29,7 @@ int StackOnListPush(StackOnList* stk, void* buffer)
     assert(stk);
     assert(buffer);
 
-    ListElem* elem = ListInsert(&stk->data, &stk->data.begin, buffer, stk->elemSize);
+    ListElem* elem = ListInsert(&stk->data, stk->data.begin, buffer, stk->elemSize);
 
     return elem == NULL ? 0 : 1;
 }

@@ -78,7 +78,7 @@ void* ArrayGetVal(Array* arr, size_t index)
 {
     assert(index < arr->size);
 
-    return arr->data + ArrayGetDataIndex(arr, index);
+    return (void*)((char*)arr->data + ArrayGetDataIndex(arr, index));
 }
 
 Array* ArraySetVal(Array* arr, size_t index, void* val)
@@ -93,7 +93,7 @@ Array* ArraySetVal(Array* arr, size_t index, void* val)
 static size_t ArrayGetDataIndex(Array* arr, size_t index)
 {
     assert(index < arr->size);
-    
+
     return index * arr->elemSize;
 }
 
@@ -103,12 +103,12 @@ static Array* ArraySizeIncrease(Array* arr)
 
     arr->capacity *= 2;
 
-    void* tmp = realloc(arr, arr->capacity * arr->elemSize);
+    void* tmp = realloc(arr->data, arr->capacity * arr->elemSize);
 
     if (tmp != NULL)
-        arr->data = tmp;
+        arr->data = (Array*)tmp;
 
-    return tmp;
+    return (Array*)tmp;
 }
 
 static Array* ArraySizeDecrease(Array* arr)
@@ -117,7 +117,7 @@ static Array* ArraySizeDecrease(Array* arr)
 
     arr->capacity /= 2;
 
-    arr->data = realloc(arr, arr->capacity * arr->elemSize);
+    arr->data = realloc(arr->data, arr->capacity * arr->elemSize);
 
     return arr;
 }

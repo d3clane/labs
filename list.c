@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "List.h"
+#include "list.h"
 
 static ListElem* ListElemCtor();
 static ListElem* ListElemDtor(ListElem* elem);
@@ -50,7 +50,7 @@ int ListPopHead(List* list)
 
     ListElem* elem = ListGetHead(list);
 
-    if (elem == nullptr)
+    if (elem == NULL)
         return 0;
 
     ListElem* newHead = elem->nextElem;
@@ -103,8 +103,8 @@ static ListElem* ListElemInit(void* val, size_t valSize, ListElem* next)
     
     ListElem* elem = ListElemCtor();
 
-    if (elem == nullptr)
-        return nullptr;
+    if (elem == NULL)
+        return NULL;
 
     elem->value    = calloc(1, valSize);
     memcpy(val, elem->value, valSize);
