@@ -18,4 +18,6 @@ int StackOnListPush(StackOnList* stk, void* buffer);
 int StackOnListTop (StackOnList* stk, void* buffer);
 int StackOnListPop (StackOnList* stk);
 
+size_t StackOnListGetSize(StackOnList* stk);
+
 #endif

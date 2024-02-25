@@ -60,3 +60,10 @@ int StackOnListPop (StackOnList* stk)
 
     return ListPopHead(&stk->data);
 }
+
+size_t StackOnListGetSize(StackOnList* stk)
+{
+    assert(stk);
+
+    return stk->data.size;
+}

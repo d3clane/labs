@@ -15,6 +15,8 @@ List ListCtor()
         .begin = ListElemCtor()
     };
 
+    list.size = 0;
+    
     return list;
 }
 
@@ -41,6 +43,8 @@ ListElem* ListInsert  (List* list, ListElem* anchorElement, void* val, size_t va
     ListElem* elem = ListElemInit(val, valSize, anchorElement->nextElem);
     anchorElement->nextElem = elem;
 
+    list->size++;
+
     return elem;
 }
 
@@ -57,6 +61,8 @@ int ListPopHead(List* list)
 
     ListElemDtor(elem);
     list->begin->nextElem = newHead;
+
+    list->size--;
 
     return 0;
 }

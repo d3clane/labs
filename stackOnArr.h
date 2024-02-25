@@ -16,4 +16,6 @@ int StackOnArrPush(StackOnArr* stk, void* buffer);
 int StackOnArrTop (StackOnArr* stk, void* buffer);
 int StackOnArrPop (StackOnArr* stk);
 
+size_t StackOnArrGetSize(StackOnArr* stk);
+
 #endif

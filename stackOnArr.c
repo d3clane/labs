@@ -51,3 +51,10 @@ int StackOnArrPop (StackOnArr* stk)
 
     return ArrayPopBack(&stk->data);
 }
+
+size_t StackOnArrGetSize(StackOnArr* stk)
+{
+    assert(stk);
+
+    return stk->data.size;
+}

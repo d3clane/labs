@@ -14,6 +14,8 @@ typedef struct ListElem
 typedef struct List
 {
     ListElem* begin;
+    
+    size_t size;
 } List;
 
 List  ListCtor();
