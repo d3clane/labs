@@ -76,7 +76,7 @@ int ArrayPopBack (Array* arr)
 
 void* ArrayGetVal(Array* arr, size_t index)
 {
-    assert(index < arr->size);
+    assert(index < arr->capacity);
 
     return (void*)((char*)arr->data + ArrayGetDataIndex(arr, index));
 }
@@ -92,7 +92,7 @@ Array* ArraySetVal(Array* arr, size_t index, void* val)
 
 static size_t ArrayGetDataIndex(Array* arr, size_t index)
 {
-    assert(index < arr->size);
+    assert(index < arr->capacity);
 
     return index * arr->elemSize;
 }

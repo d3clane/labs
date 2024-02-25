@@ -1,5 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
+
 
 #include "stackOnArr.h"
 #include "dynamicArr.h"
@@ -38,7 +40,7 @@ int StackOnArrTop (StackOnArr* stk, void* buffer)
     if (stk->data.size == 0)
         return 0;
 
-    buffer = ArrayGetVal(&stk->data, stk->data.size - 1);
+    memcpy(buffer, ArrayGetVal(&stk->data, stk->data.size - 1), stk->data.elemSize);
 
     return 1;
 }
