@@ -18,9 +18,9 @@ TARGET = stack
 OBJECTDIR = build
 DOXYFILE = Others/Doxyfile
 
-HEADERS  = list.h dynamicArr.h stackOnArr.h stackOnList.h
+HEADERS  = list.h dynamicArr.h stackOnArr.h stackOnList.h tests.h
 
-FILESCPP = main.c list.c dynamicArr.c stackOnArr.c stackOnList.c
+FILESCPP = main.c list.c dynamicArr.c stackOnArr.c stackOnList.c tests.c
 
 objects = $(FILESCPP:%.c=$(OBJECTDIR)/%.o)
 

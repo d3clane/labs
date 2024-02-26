@@ -30,8 +30,6 @@ int StackOnListPush(StackOnList* stk, void* buffer)
     assert(stk);
     assert(buffer);
 
-    printf("ELEM1 size - %zu, val - %d\n", stk->elemSize, *(int*)buffer);
-    
     ListElem* elem = ListInsert(&stk->data, stk->data.begin, buffer, stk->elemSize);
 
     return elem == NULL ? 0 : 1;

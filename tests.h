@@ -1,8 +1,18 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-void test1();
-void test2();
-void test3();
-void test4();
+#include <stddef.h>
+
+double TestStackOnList1();
+double TestStackOnArr1 ();
+
+double TestStackOnList2();
+double TestStackOnArr2 ();
+
+double TestStackOnList3();
+double TestStackOnArr3 ();
+
+double TestStackOnList4(size_t n);
+double TestStackOnArr4 (size_t n);
+
 #endif
