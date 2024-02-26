@@ -12,7 +12,6 @@ double TestStackOnArr2 ();
 double TestStackOnList3();
 double TestStackOnArr3 ();
 
-double TestStackOnList4(size_t n);
 double TestStackOnArr4 (size_t n);
 
 #endif
