@@ -14,8 +14,8 @@
 ## Test4
 
 Файлы со сгенерированными точками:
-- [dynamic array stack](Test4Arr.txt)
-- [list stack](Test4List.txt)
+- [dynamic array stack](Output/Test4Arr.txt)
+- [list stack](Output/Test4List.txt)
 
 График:
 ![graph](https://github.com/d3clane/labs/blob/lab1/ReadmeAssets/imgs/output.png);
