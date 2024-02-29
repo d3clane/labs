@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -15,6 +16,7 @@ List ListCtor()
         .begin = ListElemCtor()
     };
 
+    list.begin->nextElem = list.begin;
     list.size = 0;
     
     return list;
@@ -42,6 +44,7 @@ ListElem* ListInsert  (List* list, ListElem* anchorElement, void* val, size_t va
 
     ListElem* elem = ListElemInit(val, valSize, anchorElement->nextElem);
     anchorElement->nextElem = elem;
+
 
     list->size++;
 
