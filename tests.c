@@ -34,6 +34,8 @@ double TestStackOnArr1()
             StackOnArrPush(stk, &i);
     }
 
+    StackOnArrDtor(stk);
+
     return (double)(clock() - startTime) / (double)CLOCKS_PER_SEC;
 }
 
@@ -60,6 +62,8 @@ double TestStackOnList1 ()
         for (int i = 0; i < (int)(stackSize / 4); ++i)
             StackOnListPush(stk, &i);
     }
+
+    StackOnListDtor(stk);
 
     return (double)(clock() - startTime) / (double)CLOCKS_PER_SEC;
 }
@@ -106,6 +110,8 @@ double TestStackOnList2()
             StackOnListPush(stk, &j);
     }
 
+    StackOnListDtor(stk);
+
     return (double) (clock() - startTime) / (double) CLOCKS_PER_SEC;
 }
 
@@ -151,6 +157,8 @@ double TestStackOnArr2 ()
             StackOnArrPush(stk, &j);
     }
 
+    StackOnArrDtor(stk);
+
     return (double) (clock() - startTime) / (double) CLOCKS_PER_SEC;
 }
 
@@ -171,6 +179,8 @@ double TestStackOnList3()
         else
             StackOnListPush(stk, &i);
     }
+
+    StackOnListDtor(stk);
 
     return (double) (clock() - startTime) / (double) CLOCKS_PER_SEC;
 }
@@ -193,6 +203,8 @@ double TestStackOnArr3 ()
             StackOnArrPush(stk, &i);
     }
 
+    StackOnArrDtor(stk);
+
     return (double) (clock() - startTime) / (double) CLOCKS_PER_SEC;
 }
 
@@ -208,6 +220,26 @@ double TestStackOnArr4 (size_t n)
 
         StackOnArrPush(stk, &toPush);
     }
+
+    StackOnArrDtor(stk);
+
+    return (double)(clock() - startTime) / (double) CLOCKS_PER_SEC;
+}
+
+double TestStackOnList4(size_t n)
+{
+    StackOnList* stk = StackOnListCtor(sizeof(int));
+
+    clock_t startTime = clock();
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        int toPush = (int)i;
+
+        StackOnListPush(stk, &toPush);
+    }
+
+    StackOnListDtor(stk);
 
     return (double)(clock() - startTime) / (double) CLOCKS_PER_SEC;
 }
