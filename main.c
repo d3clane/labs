@@ -4,8 +4,8 @@
 
 int main()
 {
-    FILE* arrOut  = fopen("Test4Arr.txt",  "w");
-    FILE* listOut = fopen("Test4List.txt", "w");
+    FILE* arrOut  = fopen("Output/Test4Arr.txt",  "w");
+    FILE* listOut = fopen("Output/Test4List.txt", "w");
 
     printf("Test1, stack on arr : %lf\n", TestStackOnArr1());
     printf("Test1, stack on list: %lf\n", TestStackOnList1());
