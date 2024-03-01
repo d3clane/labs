@@ -45,7 +45,6 @@ ListElem* ListInsert  (List* list, ListElem* anchorElement, void* val, size_t va
     ListElem* elem = ListElemInit(val, valSize, anchorElement->nextElem);
     anchorElement->nextElem = elem;
 
-
     list->size++;
 
     return elem;
