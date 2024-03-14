@@ -1,0 +1,5 @@
+build/
+big_tests/
+small_tests/
+test_most_duplicates/
+very_small_tests/
