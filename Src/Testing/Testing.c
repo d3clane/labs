@@ -31,6 +31,7 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
     fprintf(stderr, "out file name - %s\n", testsResFileName);
     for (size_t arrSize = from; arrSize <= to; arrSize += step)
     {
+        double averageTime = 0;
         for (size_t k = 1; k <= numberOfTests; ++k)
         {
             snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  
@@ -45,6 +46,7 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
             clock_t sortTime = clock();
             sort(arr, arrSize);
             sortTime = clock() - sortTime;
+            averageTime += (double)sortTime / CLOCKS_PER_SEC;
 
             fclose(inStream);
 
@@ -61,10 +63,12 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 
             fclose(inStream);
 
-            fprintf(outStream, "%zu %lf\n", arrSize, (double)sortTime / CLOCKS_PER_SEC);
 
             timeArr[timeArrPos++] = (double)sortTime / CLOCKS_PER_SEC;
         }
+        averageTime /= 5;
+        
+        fprintf(outStream, "%zu %lf\n", arrSize, averageTime);
     }
 
     free(arr);
