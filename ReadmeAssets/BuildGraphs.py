@@ -14,10 +14,10 @@ data4 = np.loadtxt('../TestsResults/Point1/Shell.out', delimiter=' ')
 x4, y4 = data4[:, 0], data4[:, 1]
 
 plt.figure()
-plt.plot(x1, y1, 'bo-', label='Bubble sort')
-plt.plot(x2, y2, 'ro-', label='Insertion sort')
-plt.plot(x3, y3, 'go-', label='Selection sort')
-plt.plot(x4, y4, 'mo-', label='Shell sort')
+plt.plot(x1, y1, 'b-', label='Bubble sort')
+plt.plot(x2, y2, 'r-', label='Insertion sort')
+plt.plot(x3, y3, 'g-', label='Selection sort')
+plt.plot(x4, y4, 'm-', label='Shell sort')
 
 plt.xlabel('array size')
 plt.ylabel('time')

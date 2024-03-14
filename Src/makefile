@@ -22,12 +22,12 @@ OBJECTDIR = build
 DOXYFILE = Others/Doxyfile
 
 SORTS_DIR     	= Sorts
-SORTS_HEADERS	= QuadraticSorts.h
-SORTS_CPP	  	= QuadraticSorts.c
+SORTS_HEADERS	= $(SORTS_DIR)/QuadraticSorts.h $(SORTS_DIR)/MergeSorts.h $(SORTS_DIR)/Sorts.h
+SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c
 SORTS_OBJ	  	= $(SORTS_CPP:%.c=$(OBJECTDIR)/%.o)
 
 TESTING_DIR     = Testing
-TESTING_HEADERS = Testing.h
+TESTING_HEADERS = $(TESTING_DIR)/Testing.h
 TESTING_CPP		= Testing.c main.c 
 TESTING_OBJ     = $(TESTING_CPP:%.c=$(OBJECTDIR)/%.o)
 
@@ -40,10 +40,10 @@ all: $(PROGRAMDIR)/$(TARGET)
 $(PROGRAMDIR)/$(TARGET): $(TESTING_OBJ) $(SORTS_OBJ)
 	$(CXX) $^ -o $(PROGRAMDIR)/$(TARGET) $(CXXFLAGS)
 
-$(OBJECTDIR)/%.o : $(SORTS_DIR)/%.c $(SORTS_DIR)/$(SORTS_HEADERS)
+$(OBJECTDIR)/%.o : $(SORTS_DIR)/%.c
 	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
-$(OBJECTDIR)/%.o : $(TESTING_DIR)/%.c $(TESTING_DIR)/$(TESTING_HEADERS)
+$(OBJECTDIR)/%.o : $(TESTING_DIR)/%.c
 	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
 docs: 
