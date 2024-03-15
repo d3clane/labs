@@ -54,6 +54,7 @@ int main()
 
     //-----------------------Point 5-------------------------------------------
 
+    /*
     TestSort("Tests/big_tests", "TestsResults/Point5/HoareCenter.out", 
                                             0, 1000000, 10000, 1, QsortHoare);
     TestSort("Tests/big_tests", "TestsResults/Point5/HoareRnd.out", 
@@ -63,4 +64,15 @@ int main()
                                             0, 1000000, 10000, 1, QsortMedian3Pivot); 
     TestSort("Tests/big_tests", "TestsResults/Point5/HoareMedianRnd3.out", 
                                             0, 1000000, 10000, 1, QsortMedianRnd3Pivot); 
+
+    */
+
+   //-----------------------Point 8-------------------------------------------
+
+    TestSort("Tests/big_tests", "TestsResults/Point8/LSD.out", 
+                                            0, 1000000, 10000, 1, LSDSort);
+    TestSort("Tests/big_tests", "TestsResults/Point8/MSD.out", 
+                                            0, 1000000, 10000, 1, MSDSort);
+    
+
 }
