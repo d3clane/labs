@@ -23,6 +23,7 @@ int main()
     TestSort("Tests/big_tests", "TestsResults/Point3/IterativeMerge.out", 
                                             0, 1000000, 10000, 1, IterativeMergeSort);
     */
+
     //-----------------------Point 4-------------------------------------------
 
     /*
@@ -44,9 +45,22 @@ int main()
     TestSort("Tests/test_most_duplicates", "TestsResults/Point4/Ternary_duplicates_tests.out", 
                                             0, 1000000, 10000, 1, QsortTernary);
 
-    */
+    
 
     TestSort("Tests/big_tests", "TestsResults/Point4/OneBranch_big_tests.out", 
                                             0, 1000000, 10000, 1, QsortOneBranch);
 
+    */
+
+    //-----------------------Point 5-------------------------------------------
+
+    TestSort("Tests/big_tests", "TestsResults/Point5/HoareCenter.out", 
+                                            0, 1000000, 10000, 1, QsortHoare);
+    TestSort("Tests/big_tests", "TestsResults/Point5/HoareRnd.out", 
+                                            0, 1000000, 10000, 1, QsortRndPivot);
+
+    TestSort("Tests/big_tests", "TestsResults/Point5/HoareMedian3.out", 
+                                            0, 1000000, 10000, 1, QsortMedian3Pivot); 
+    TestSort("Tests/big_tests", "TestsResults/Point5/HoareMedianRnd3.out", 
+                                            0, 1000000, 10000, 1, QsortMedianRnd3Pivot); 
 }

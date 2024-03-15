@@ -6,13 +6,22 @@
 #include <time.h>
 
 static inline void Swap(int* val1, int* val2);
+static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right);
+static inline int ChoosePivotRnd        (int* arr, size_t left, size_t right);
+static inline int ChoosePivotMedian3    (int* arr, size_t left, size_t right);
+static inline int ChoosePivotMedianRnd3 (int* arr, size_t left, size_t right);
 
-static void QsortHoareCall      (int* arr, const size_t left, const size_t right);
+static inline int ChooseMedianOf3Elements(int* arr, size_t pos1, size_t pos2, size_t pos3);
+
+static void QsortHoareCall      (int* arr, const size_t left, const size_t right,
+                                    int (*ChoosePivot)(int* arr, size_t left, size_t right));
+
 static void QsortLomutoCall     (int* arr, const size_t left, const size_t right);
 static void QsortTernaryCall    (int* arr, const size_t left, const size_t right);
 static void QsortOneBranchCall  (int* arr, const size_t left, const size_t right);
 
-static size_t PartitionHoare  (int* arr, size_t left, size_t right);
+static size_t PartitionHoare (int* arr, size_t left, size_t right,
+                                int (*ChoosePivot)(int* arr, size_t left, size_t right));
 static size_t PartitionLomuto (int* arr, size_t left, size_t right);
 static void   PartitionTernary(int* arr, size_t left, size_t right, 
                                          size_t* equalPartBeginPos, size_t* equalPartEndPos);
@@ -22,7 +31,7 @@ void QsortHoare  (int* arr, const size_t arrSize)
     if (arrSize == 0)
         return;
 
-    QsortHoareCall(arr, 0, arrSize - 1);
+    QsortHoareCall(arr, 0, arrSize - 1, ChoosePivotCenter);
 }
 
 void QsortLomuto (int* arr, const size_t arrSize)
@@ -49,15 +58,40 @@ void QsortOneBranch(int* arr, const size_t arrSize)
     QsortOneBranchCall(arr, 0, arrSize - 1);
 }
 
-static void QsortHoareCall (int* arr, const size_t left, const size_t right)
+void QsortRndPivot          (int* arr, const size_t arrSize)
+{
+    if (arrSize == 0)
+        return;
+
+    QsortHoareCall(arr, 0, arrSize - 1, ChoosePivotRnd);
+}
+
+void QsortMedian3Pivot      (int* arr, const size_t arrSize)
+{
+    if (arrSize == 0)
+        return;
+
+    QsortHoareCall(arr, 0, arrSize - 1, ChoosePivotMedian3);
+}
+
+void QsortMedianRnd3Pivot   (int* arr, const size_t arrSize)
+{
+    if (arrSize == 0)
+        return;
+
+    QsortHoareCall(arr, 0, arrSize - 1, ChoosePivotMedianRnd3);
+}
+
+static void QsortHoareCall (int* arr, const size_t left, const size_t right,
+                                int (*ChoosePivot)(int* arr, size_t left, size_t right))
 {
     if (left >= right)
         return;
 
-    size_t mid = PartitionHoare(arr, left, right);
+    size_t mid = PartitionHoare(arr, left, right, ChoosePivot);
 
-    QsortHoareCall(arr, left, mid);
-    QsortHoareCall(arr, mid + 1, right);
+    QsortHoareCall(arr, left, mid, ChoosePivot);
+    QsortHoareCall(arr, mid + 1, right, ChoosePivot);
 }
 
 static void QsortLomutoCall(int* arr, const size_t left, const size_t right)
@@ -81,7 +115,7 @@ static void QsortOneBranchCall  (int* arr, const size_t leftPos, const size_t ri
 
     do
     {
-        size_t mid = PartitionHoare(arr, left, right);
+        size_t mid = PartitionHoare(arr, left, right, ChoosePivotCenter);
         if (mid - left + 1 > right - mid) // mid - left > right - mid - 1
         {
             QsortOneBranchCall(arr, mid + 1, right);
@@ -113,14 +147,15 @@ static void QsortTernaryCall(int* arr, const size_t left, const size_t right)
     QsortTernaryCall(arr, secondSegmentBegin + 1, right);
 }
 
-static size_t PartitionHoare (int* arr,       size_t left,       size_t right)
+static size_t PartitionHoare (int* arr, size_t left, size_t right,
+                                int (*PivotChoose)(int* arr, size_t left, size_t right))
 {
-    int pivot = arr[(left + right) >> 1];
+    int pivot = PivotChoose(arr, left, right);
 
     while (left <= right)
     {
         while (arr[left]  < pivot)  ++left;
-        while (arr[right] >  pivot) --right;
+        while (arr[right] > pivot) --right;
 
         if (right <= left)
             return right;
@@ -133,7 +168,7 @@ static size_t PartitionHoare (int* arr,       size_t left,       size_t right)
     return right;
 }
 
-static size_t PartitionLomuto(int* arr,       size_t left,       size_t right)
+static size_t PartitionLomuto(int* arr, size_t left, size_t right)
 {
     size_t pivotPos = (left + right) >> 1;
     int pivot = arr[pivotPos];
@@ -190,4 +225,49 @@ static inline void Swap(int* val1, int* val2)
     int temp = *val1;
                *val1 = *val2;
                        *val2 = temp;
+}
+
+static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right)
+{
+    return arr[(left + right) >> 1];
+}
+
+static inline int ChoosePivotRnd        (int* arr, size_t left, size_t right)
+{
+    srand(clock());
+
+    return arr[rand() % (right - left) + left];
+}
+
+static inline int ChoosePivotMedian3    (int* arr, size_t left, size_t right)
+{
+    return ChooseMedianOf3Elements(arr, left, (left + right) >> 1, right);
+}
+
+static inline int ChoosePivotMedianRnd3 (int* arr, size_t left, size_t right)
+{
+    srand(clock());
+
+    size_t pos1 = rand() % (right - left + 1) + left;
+    size_t pos2 = rand() % (right - left + 1) + left;
+    size_t pos3 = rand() % (right - left + 1) + left;
+
+    return ChooseMedianOf3Elements(arr, pos1, pos2, pos3);
+}
+
+static inline int ChooseMedianOf3Elements(int* arr, size_t pos1, size_t pos2, size_t pos3)
+{
+    int val = arr[pos1];
+
+    if (val < arr[pos3])
+    {
+        if (val >= arr[pos2])
+            return val;
+        val = arr[pos3];
+    }
+
+    if (val < arr[pos2])
+        return val;
+
+    return arr[pos2];   
 }
