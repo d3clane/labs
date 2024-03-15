@@ -16,8 +16,6 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 {
     #define MAX_FILE_NAME_SIZE 256
 
-    fprintf(stderr, "HERE\n");
-
     static char  inFileName[MAX_FILE_NAME_SIZE] = "";
 
     int* arr        = (int*)calloc(to, sizeof(*arr));
@@ -28,7 +26,7 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 
     FILE* outStream = fopen(testsResFileName, "w");
     assert(outStream);
-    fprintf(stderr, "out file name - %s\n", testsResFileName);
+    //fprintf(stderr, "out file name - %s\n", testsResFileName);
     for (size_t arrSize = from; arrSize <= to; arrSize += step)
     {
         double averageTime = 0;
@@ -37,7 +35,7 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
             snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  
                                                         testsFromDir, arrSize, k);
             
-            fprintf(stderr, "in file name - %s\n", inFileName);
+            //fprintf(stderr, "in file name - %s\n", inFileName);
             FILE* inStream = fopen(inFileName, "r");
             assert(inStream);
 
@@ -52,7 +50,7 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 
             snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.out",  
                                                         testsFromDir, arrSize, k);
-            fprintf(stderr, "in file name - %s\n", inFileName);
+            //fprintf(stderr, "in file name - %s\n", inFileName);
 
             inStream = fopen(inFileName, "r");
             assert(inStream);
@@ -63,10 +61,9 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 
             fclose(inStream);
 
-
             timeArr[timeArrPos++] = (double)sortTime / CLOCKS_PER_SEC;
         }
-        averageTime /= 5;
+        averageTime /= numberOfTests;
         
         fprintf(outStream, "%zu %lf\n", arrSize, averageTime);
     }
@@ -78,6 +75,73 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
 
     fclose(outStream);
     return timeArr;
+}
+
+void TestHeapSort(const char* testsFromDir, const char* testsResFileName, 
+                  size_t from, size_t to, size_t step, size_t numberOfTests,
+                  void (*sort)(int* arr, size_t arrSize, size_t heapRank))
+{
+    #define MAX_FILE_NAME_SIZE 256
+
+
+    static char inFileName [MAX_FILE_NAME_SIZE] = "";
+    static char outFileName[MAX_FILE_NAME_SIZE] = "";
+
+    int* arr        = (int*)calloc(to, sizeof(*arr));
+    int* sortedArr  = (int*)calloc(to, sizeof(*sortedArr));
+
+    for (size_t heapRank = 2; heapRank <= 2; ++heapRank)
+    {
+        snprintf(outFileName, MAX_FILE_NAME_SIZE, "%s_%zu", testsResFileName, heapRank);
+        FILE* outStream = fopen(outFileName, "w");
+        assert(outStream);
+        //fprintf(stderr, "out file name - %s\n", outFileName);
+        for (size_t arrSize = from; arrSize <= to; arrSize += step)
+        {
+            double averageTime = 0;
+            for (size_t k = 1; k <= numberOfTests; ++k)
+            {
+                snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  
+                                                            testsFromDir, arrSize, k);
+                
+                //fprintf(stderr, "in file name - %s\n", inFileName);
+                FILE* inStream = fopen(inFileName, "r");
+                assert(inStream);
+
+                ReadFromFile(inStream, arr, arrSize);
+
+                clock_t sortTime = clock();
+                sort(arr, arrSize, heapRank);
+                sortTime = clock() - sortTime;
+                averageTime += (double)sortTime / CLOCKS_PER_SEC;
+
+                fclose(inStream);
+
+                snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.out",  
+                                                            testsFromDir, arrSize, k);
+                //fprintf(stderr, "in file name - %s\n", inFileName);
+
+                inStream = fopen(inFileName, "r");
+                assert(inStream);
+
+                ReadFromFile(inStream, sortedArr, arrSize);
+
+                assert(ArraysAreEqual(arr, sortedArr, arrSize));
+
+                fclose(inStream);
+            }
+            averageTime /= numberOfTests;
+            
+            fprintf(outStream, "%zu %lf\n", arrSize, averageTime);
+        }
+        
+        fclose(outStream);
+    }
+
+    free(arr);
+    free(sortedArr);
+
+    #undef MAX_FILE_NAME_SIZE
 }
 
 static inline void ReadFromFile(FILE* inStream, int* arr, size_t arrSize)

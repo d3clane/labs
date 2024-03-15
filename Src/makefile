@@ -23,9 +23,9 @@ DOXYFILE = Others/Doxyfile
 
 SORTS_DIR     	= Sorts
 SORTS_HEADERS	= $(SORTS_DIR)/QuadraticSorts.h $(SORTS_DIR)/MergeSorts.h $(SORTS_DIR)/Sorts.h	\
-				  $(SORTS_DIR)/Qsorts.h $(SORTS_DIR)/DigitsSorts.h
+				  $(SORTS_DIR)/Qsorts.h $(SORTS_DIR)/DigitsSorts.h $(SORTS_DIR)/HeapSort.h
 
-SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c Qsorts.c DigitsSorts.c
+SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c Qsorts.c DigitsSorts.c HeapSort.c
 SORTS_OBJ	  	= $(SORTS_CPP:%.c=$(OBJECTDIR)/%.o)
 
 TESTING_DIR     = Testing
@@ -33,19 +33,27 @@ TESTING_HEADERS = $(TESTING_DIR)/Testing.h
 TESTING_CPP		= Testing.c main.c 
 TESTING_OBJ     = $(TESTING_CPP:%.c=$(OBJECTDIR)/%.o)
 
+HEAP_DIR     = Heap
+HEAP_HEADERS = $(HEAP_DIR)/Heap.h
+HEAP_CPP	 = Heap.c
+HEAP_OBJ     = $(HEAP_CPP:%.c=$(OBJECTDIR)/%.o)
+
 .PHONY: all docs clean install
 	
 all: $(PROGRAMDIR)/$(TARGET)
 	@cp $(PROGRAMDIR)/$(TARGET) ../
 
 
-$(PROGRAMDIR)/$(TARGET): $(TESTING_OBJ) $(SORTS_OBJ)
+$(PROGRAMDIR)/$(TARGET): $(TESTING_OBJ) $(SORTS_OBJ) $(HEAP_OBJ)
 	$(CXX) $^ -o $(PROGRAMDIR)/$(TARGET) $(CXXFLAGS)
 
 $(OBJECTDIR)/%.o : $(SORTS_DIR)/%.c
 	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
 $(OBJECTDIR)/%.o : $(TESTING_DIR)/%.c
+	$(CXX) -c $< -o $@ $(CXXFLAGS) 
+
+$(OBJECTDIR)/%.o : $(HEAP_DIR)/%.c
 	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
 docs: 

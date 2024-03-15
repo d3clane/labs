@@ -5,5 +5,6 @@
 #include "MergeSorts.h"
 #include "Qsorts.h"
 #include "DigitsSorts.h"
+#include "HeapSort.h"
 
 #endif
