@@ -3,5 +3,6 @@
 
 #include "QuadraticSorts.h"
 #include "MergeSorts.h"
+#include "Qsorts.h"
 
 #endif

@@ -22,8 +22,10 @@ OBJECTDIR = build
 DOXYFILE = Others/Doxyfile
 
 SORTS_DIR     	= Sorts
-SORTS_HEADERS	= $(SORTS_DIR)/QuadraticSorts.h $(SORTS_DIR)/MergeSorts.h $(SORTS_DIR)/Sorts.h
-SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c
+SORTS_HEADERS	= $(SORTS_DIR)/QuadraticSorts.h $(SORTS_DIR)/MergeSorts.h $(SORTS_DIR)/Sorts.h	\
+				  $(SORTS_DIR)/Qsorts.h
+
+SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c Qsorts.c
 SORTS_OBJ	  	= $(SORTS_CPP:%.c=$(OBJECTDIR)/%.o)
 
 TESTING_DIR     = Testing
