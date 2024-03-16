@@ -23,8 +23,8 @@ int main()
     //-----------------------Point 2-------------------------------------------
 
     /*    
-    TestHeapSort("Tests/big_tests", "TestsResults/Point2/HeapSort", 
-                                            0, 1000000, 10000, 1, HeapSort);
+    TestHeapSort("Tests/big_tests", "TestsResults/Point2/HeapSortTestRank", 
+                                            0, 1000000, 10000, 1, HeapSortTestRank);
     */
 
     //-----------------------Point 3-------------------------------------------
@@ -94,11 +94,13 @@ int main()
     //TestIntroSort("Tests/big_tests", "TestsResults/Point7/TestingDepth.out",
     //                                        0, 1000000, 10000, 1, IntroSortTestConstant);
 
+    /*
     TestSort("Tests/big_tests", "TestsResults/Point7/IntroSort.out",
                                               0, 1000000, 10000, 1, IntroSort);
 
     TestSort("Tests/big_tests", "TestsResults/Point7/QuickSort.out",
                                             0, 1000000, 10000, 1, QsortHoare);
+    */
 
     //-----------------------Point 8-------------------------------------------
 
@@ -109,4 +111,24 @@ int main()
                                             0, 1000000, 10000, 1, MSDSort);
     
     */
+
+   //-----------------------Point 9-------------------------------------------
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/HeapSort.out",
+                                            0, 1000000, 10000, 1, HeapSort);
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/MergeIterative.out",
+                                            0, 1000000, 10000, 1, IterativeMergeSort);
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/Hoare_Central.out",
+                                            0, 1000000, 10000, 1, QsortHoare);
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/Introsort.out",
+                                            0, 1000000, 10000, 1, IntroSort);
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/LSD.out",
+                                            0, 1000000, 10000, 1, LSDSort);
+
+   TestSort("Tests/big_tests", "TestsResults/Point9/QsortStd.out",
+                                            0, 1000000, 10000, 1, QsortStd);
 }

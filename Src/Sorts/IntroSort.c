@@ -31,7 +31,6 @@ static void IntroSortCall(int* arr, const size_t left, const size_t right,
                                                                             size_t depth)
 {
     static const size_t optimalBlockSize = 64;
-    static const size_t optimalHeapRank  = 6;
     size_t arrSize = right - left + 1;
 
     if (left >= right)
@@ -45,7 +44,7 @@ static void IntroSortCall(int* arr, const size_t left, const size_t right,
 
     if (depth == 0)
     {
-        HeapSort(arr + left, arrSize, optimalHeapRank);
+        HeapSort(arr + left, arrSize);
         return;
     }
 

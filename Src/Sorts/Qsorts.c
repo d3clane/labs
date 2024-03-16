@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+static inline int QsortStdCmp(const void* value1, const void* value2);
+
 static inline void Swap(int* val1, int* val2);
 static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right);
 static inline int ChoosePivotRnd        (int* arr, size_t left, size_t right);
@@ -80,6 +82,22 @@ void QsortMedianRnd3Pivot   (int* arr, const size_t arrSize)
         return;
 
     QsortHoareCall(arr, 0, arrSize - 1, ChoosePivotMedianRnd3);
+}
+
+void QsortStd               (int* arr, const size_t arrSize)
+{
+    if (arrSize == 0)
+        return;
+    
+    qsort(arr, arrSize, sizeof(*arr), QsortStdCmp);
+}
+
+static inline int QsortStdCmp(const void* value1, const void* value2)
+{
+    int* val1 = (int*)value1;
+    int* val2 = (int*)value2;
+
+    return *val1 - *val2;
 }
 
 static void QsortHoareCall (int* arr, const size_t left, const size_t right,

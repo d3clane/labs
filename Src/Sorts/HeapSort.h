@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 
-void HeapSort(int* arr, size_t arrSize, size_t heapRank);
+void HeapSortTestRank(int* arr, size_t arrSize, size_t heapRank);
+
+void HeapSort(int* arr, size_t arrSize);
 
 #endif

@@ -11,4 +11,5 @@ void QsortRndPivot          (int* arr, const size_t arrSize);
 void QsortMedian3Pivot      (int* arr, const size_t arrSize);
 void QsortMedianRnd3Pivot   (int* arr, const size_t arrSize);
 
+void QsortStd               (int* arr, const size_t arrSize);
 #endif
