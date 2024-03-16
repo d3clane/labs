@@ -1,26 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+data1 = np.loadtxt('../TestsResults/Point7/IntroSort.out', delimiter=' ')
+x1, y1 = data1[:, 0], data1[:, 1]
+
+data2 = np.loadtxt('../TestsResults/Point7/QuickSort.out', delimiter=' ')
+x2, y2 = data2[:, 0], data2[:, 1]
+
+#data3 = np.loadtxt('../TestsResults/Point5/HoareMedianRnd3.out', delimiter=' ')
+#x3, y3 = data3[:, 0], data3[:, 1]
+
+#data4 = np.loadtxt('../TestsResults/Point5/HoareRnd.out', delimiter=' ')
+#x4, y4 = data4[:, 0], data4[:, 1]
+
 plt.figure()
-
-# Выбор отличающихся цветов для первых 7 графиков
-colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink']
-
-for k in range(2, 16):
-    data = np.loadtxt(f'../TestsResults/Point2/HeapSort_{k}', delimiter=' ')
-    x, y = data[:, 0], data[:, 1]
-    
-    if k <= 8:
-        color = colors[k-2]  # Используем выбранные цвета для первых 7 графиков
-    else:
-        color = plt.cm.viridis((k-2) / 13)  # Для остальных графиков используем цвет из colormap (здесь - виридис)
-    
-    plt.plot(x, y, color=color, label=f'rank {k}')
+plt.plot(x1, y1, 'b-', label='Intro sort')
+plt.plot(x2, y2, 'r-', label='Quick sort')
+#plt.plot(x3, y3, 'g-', label='Median 3 random pivot')
+#plt.plot(x4, y4, 'm-', label='Random pivot')
 
 plt.xlabel('array size')
 plt.ylabel('time')
 plt.grid(True)
 plt.legend()
 
-plt.savefig('imgs/HeapSorts.png')
-plt.show()
+plt.savefig('imgs/IntroSortVsQsort.png')

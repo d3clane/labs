@@ -23,9 +23,10 @@ DOXYFILE = Others/Doxyfile
 
 SORTS_DIR     	= Sorts
 SORTS_HEADERS	= $(SORTS_DIR)/QuadraticSorts.h $(SORTS_DIR)/MergeSorts.h $(SORTS_DIR)/Sorts.h	\
-				  $(SORTS_DIR)/Qsorts.h $(SORTS_DIR)/DigitsSorts.h $(SORTS_DIR)/HeapSort.h
+				  $(SORTS_DIR)/Qsorts.h $(SORTS_DIR)/DigitsSorts.h $(SORTS_DIR)/HeapSort.h 		\
+				  $(SORTS_DIR)/IntroSort.h
 
-SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c Qsorts.c DigitsSorts.c HeapSort.c
+SORTS_CPP	  	= QuadraticSorts.c MergeSorts.c Qsorts.c DigitsSorts.c HeapSort.c IntroSort.c
 SORTS_OBJ	  	= $(SORTS_CPP:%.c=$(OBJECTDIR)/%.o)
 
 TESTING_DIR     = Testing

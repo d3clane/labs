@@ -22,8 +22,10 @@ int main()
 
     //-----------------------Point 2-------------------------------------------
 
+    /*    
     TestHeapSort("Tests/big_tests", "TestsResults/Point2/HeapSort", 
                                             0, 1000000, 10000, 1, HeapSort);
+    */
 
     //-----------------------Point 3-------------------------------------------
     
@@ -76,18 +78,35 @@ int main()
     TestSort("Tests/big_tests", "TestsResults/Point5/HoareMedianRnd3.out", 
                                             0, 1000000, 10000, 1, QsortMedianRnd3Pivot); 
 
-    
+    */
 
-   //-----------------------Point 8-------------------------------------------
+    //-----------------------Point 6-------------------------------------------
 
-    
+    /*
+    TestSort("Tests/very_small_tests", "TestsResults/Point6/HoareCenter.out", 
+                                            1, 150, 1, 5, QsortHoare);
+    TestSort("Tests/very_small_tests", "TestsResults/Point6/Shell.out", 
+                                            1, 150, 1, 5, ShellSort);
+    */
+
+    //-----------------------Point 7-------------------------------------------
+
+    //TestIntroSort("Tests/big_tests", "TestsResults/Point7/TestingDepth.out",
+    //                                        0, 1000000, 10000, 1, IntroSortTestConstant);
+
+    TestSort("Tests/big_tests", "TestsResults/Point7/IntroSort.out",
+                                              0, 1000000, 10000, 1, IntroSort);
+
+    TestSort("Tests/big_tests", "TestsResults/Point7/QuickSort.out",
+                                            0, 1000000, 10000, 1, QsortHoare);
+
+    //-----------------------Point 8-------------------------------------------
+
+    /*
     TestSort("Tests/big_tests", "TestsResults/Point8/LSD.out", 
                                             0, 1000000, 10000, 1, LSDSort);
     TestSort("Tests/big_tests", "TestsResults/Point8/MSD.out", 
                                             0, 1000000, 10000, 1, MSDSort);
     
-    
     */
-   
-    //TODO: сука все перемерить где после point 2 там делил не на то
 }
