@@ -38,7 +38,7 @@
 
 График:
 
-![graph](https://github.com/d3clane/labs/blob/lab1/ReadmeAssets/imgs/output.png);
+![graph](https://github.com/d3clane/labs/blob/lab1/Lab1/imgs/output.png);
 
 
 ## Вывод
