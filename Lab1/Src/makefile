@@ -21,10 +21,10 @@ TARGET = tester
 OBJECTDIR = build
 DOXYFILE = Others/Doxyfile
 
-LIST_DIR     	= List
-LIST_HEADERS	= $(LIST_DIR)/list.h $(LIST_DIR)/stackOnList.h 
-LIST_CPP	  	= list.c stackOnList.c
-LIST_OBJ	  	= $(LIST_CPP:%.c=$(OBJECTDIR)/%.o)
+#LIST_DIR     	= List
+#LIST_HEADERS	= $(LIST_DIR)/list.h $(LIST_DIR)/stackOnList.h 
+#LIST_CPP	  	= list.c stackOnList.c
+#LIST_OBJ	  	= $(LIST_CPP:%.c=$(OBJECTDIR)/%.o)
 
 ARRAY_DIR     = Array
 ARRAY_HEADERS = $(ARRAY_DIR)/dynamicArr.h $(ARRAY_DIR)/stackOnArr.h
@@ -32,7 +32,7 @@ ARRAY_CPP     = dynamicArr.c stackOnArr.c
 ARRAY_OBJ     = $(ARRAY_CPP:%.c=$(OBJECTDIR)/%.o)
 
 FILES_HEADERS = tests.h
-FILES_CPP     = main.c
+FILES_CPP     = main.c tests.c
 FILES_OBJ     = $(FILES_CPP:%.c=$(OBJECTDIR)/%.o)
 
 .PHONY: all docs clean install
@@ -40,11 +40,11 @@ FILES_OBJ     = $(FILES_CPP:%.c=$(OBJECTDIR)/%.o)
 all: $(PROGRAMDIR)/$(TARGET)
 	@cp $(PROGRAMDIR)/$(TARGET) ../
 
-$(PROGRAMDIR)/$(TARGET): $(ARRAY_OBJ) $(LIST_OBJ) $(FILES_OBJ)
+$(PROGRAMDIR)/$(TARGET): $(ARRAY_OBJ) $(FILES_OBJ)
 	$(CXX) $^ -o $(PROGRAMDIR)/$(TARGET) $(CXXFLAGS)
 
-$(OBJECTDIR)/%.o : $(LIST_DIR)/%.c
-	$(CXX) -c $< -o $@ $(CXXFLAGS) 
+#$(OBJECTDIR)/%.o : $(LIST_DIR)/%.c
+#	$(CXX) -c $< -o $@ $(CXXFLAGS) 
 
 $(OBJECTDIR)/%.o : $(ARRAY_DIR)/%.c
 	$(CXX) -c $< -o $@ $(CXXFLAGS) 

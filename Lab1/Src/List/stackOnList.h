@@ -1,21 +1,25 @@
 #ifndef STACK_ON_LIST_H
 #define STACK_ON_LIST_H
 
+#if STACK_TYPE == STACK_ON_LIST
+
 #include <stddef.h>
 #include "list.h"
 
-typedef struct StackOnList
+typedef struct Stack
 {
     List data;
-} StackOnList;
+} Stack;
 
-StackOnList* StackOnListCtor(size_t elemSize);
-StackOnList* StackOnListDtor(StackOnList* stk);
+Stack* StackCtor(size_t elemSize);
+Stack* StackDtor(Stack* stk);
 
-int StackOnListPush(StackOnList* stk, void* buffer);
-int StackOnListTop (StackOnList* stk, void* buffer);
-int StackOnListPop (StackOnList* stk);
+int StackPush(Stack* stk, void* buffer);
+int StackTop (Stack* stk, void* buffer);
+int StackPop (Stack* stk);
 
-size_t StackOnListGetSize(StackOnList* stk);
+size_t StackGetSize(Stack* stk);
+
+#endif 
 
 #endif

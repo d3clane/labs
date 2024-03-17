@@ -1,22 +1,26 @@
 #ifndef STACK_ON_ARR_H
 #define STACK_ON_ARR_H
 
+#if STACK_TYPE == STACK_ON_ARR
+
 #include <stddef.h>
 #include "dynamicArr.h"
 
-typedef struct StackOnArr
+typedef struct Stack
 {
     Array data;
-} StackOnArr;
+} Stack;
 
-StackOnArr* StackOnArrInit(size_t size, size_t elemSize);
-StackOnArr* StackOnArrCtor(size_t elemSize);
-StackOnArr* StackOnArrDtor(StackOnArr* stk);
+Stack* StackInit(size_t size, size_t elemSize);
+Stack* StackCtor(size_t elemSize);
+Stack* StackDtor(Stack* stk);
 
-int StackOnArrPush(StackOnArr* stk, void* buffer);
-int StackOnArrTop (StackOnArr* stk, void* buffer);
-int StackOnArrPop (StackOnArr* stk);
+int StackPush(Stack* stk, void* buffer);
+int StackTop (Stack* stk, void* buffer);
+int StackPop (Stack* stk);
 
-size_t StackOnArrGetSize(StackOnArr* stk);
+size_t StackGetSize(Stack* stk);
+
+#endif 
 
 #endif

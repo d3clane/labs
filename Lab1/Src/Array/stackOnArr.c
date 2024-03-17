@@ -1,19 +1,20 @@
+#if STACK_TYPE == STACK_ON_ARR
+
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "stackOnArr.h"
 #include "dynamicArr.h"
 
-StackOnArr* StackOnArrCtor(size_t elemSize)
+Stack* StackCtor(size_t elemSize)
 {
-    return StackOnArrInit(1, elemSize);
+    return StackInit(1, elemSize);
 }
 
-StackOnArr* StackOnArrInit(size_t size, size_t elemSize)
+Stack* StackInit(size_t size, size_t elemSize)
 {
-    StackOnArr* stk = (StackOnArr*)calloc(size, sizeof(*stk));
+    Stack* stk = (Stack*)calloc(size, sizeof(*stk));
     assert(stk);
 
     stk->data = ArrayInit(size, elemSize);
@@ -21,7 +22,7 @@ StackOnArr* StackOnArrInit(size_t size, size_t elemSize)
     return stk;
 }
 
-StackOnArr* StackOnArrDtor(StackOnArr* stk)
+Stack* StackDtor(Stack* stk)
 {
     assert(stk);
     ArrayDtor(&stk->data);
@@ -31,7 +32,7 @@ StackOnArr* StackOnArrDtor(StackOnArr* stk)
     return NULL;
 }
 
-int StackOnArrPush(StackOnArr* stk, void* buffer)
+int StackPush(Stack* stk, void* buffer)
 {
     assert(stk);
     assert(buffer);
@@ -39,7 +40,7 @@ int StackOnArrPush(StackOnArr* stk, void* buffer)
     return ArrayPushBack(&stk->data, buffer);
 }
 
-int StackOnArrTop (StackOnArr* stk, void* buffer)
+int StackTop (Stack* stk, void* buffer)
 {
     assert(stk);
     assert(buffer);
@@ -52,16 +53,18 @@ int StackOnArrTop (StackOnArr* stk, void* buffer)
     return 1;
 }
 
-int StackOnArrPop (StackOnArr* stk)
+int StackPop (Stack* stk)
 {
     assert(stk);
 
     return ArrayPopBack(&stk->data);
 }
 
-size_t StackOnArrGetSize(StackOnArr* stk)
+size_t StackGetSize(Stack* stk)
 {
     assert(stk);
 
     return stk->data.size;
 }
+
+#endif 

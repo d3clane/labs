@@ -1,12 +1,14 @@
+#if STACK_TYPE == STACK_ON_LIST
+
 #include "stackOnList.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-StackOnList* StackOnListCtor(size_t elemSize)
+Stack* StackCtor(size_t elemSize)
 {
-    StackOnList* stk = (StackOnList*) calloc(1, sizeof(*stk));
+    Stack* stk = (Stack*) calloc(1, sizeof(*stk));
     assert(stk);
     
     stk->data     = ListCtor(elemSize);
@@ -14,7 +16,7 @@ StackOnList* StackOnListCtor(size_t elemSize)
     return stk;
 }
 
-StackOnList* StackOnListDtor(StackOnList* stk)
+Stack* StackDtor(Stack* stk)
 {
     assert(stk);
 
@@ -25,7 +27,7 @@ StackOnList* StackOnListDtor(StackOnList* stk)
     return NULL;
 }
 
-int StackOnListPush(StackOnList* stk, void* buffer)
+int StackPush(Stack* stk, void* buffer)
 {
     assert(stk);
     assert(buffer);
@@ -35,7 +37,7 @@ int StackOnListPush(StackOnList* stk, void* buffer)
     return elem == NULL ? 0 : 1;
 }
 
-int StackOnListTop (StackOnList* stk, void* buffer)
+int StackTop (Stack* stk, void* buffer)
 {
     assert(stk);
     assert(buffer);
@@ -50,16 +52,18 @@ int StackOnListTop (StackOnList* stk, void* buffer)
     return 1;
 }
 
-int StackOnListPop (StackOnList* stk)
+int StackPop (Stack* stk)
 {
     assert(stk);
 
     return ListPopHead(&stk->data);
 }
 
-size_t StackOnListGetSize(StackOnList* stk)
+size_t StackGetSize(Stack* stk)
 {
     assert(stk);
 
     return stk->data.size;
 }
+
+#endif
