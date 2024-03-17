@@ -24,6 +24,10 @@ double* TestSort(const char* testsFromDir, const char* testsResFileName,
     double* timeArr = (double*)calloc(((to - from) / step + 1) * numberOfTests, sizeof(*timeArr));
     size_t  timeArrPos = 0;
 
+    assert(arr);
+    assert(sortedArr);
+    assert(timeArr);
+    
     FILE* outStream = fopen(testsResFileName, "w");
     assert(outStream);
     //fprintf(stderr, "out file name - %s\n", testsResFileName);
@@ -90,6 +94,9 @@ void TestHeapSort(const char* testsFromDir, const char* testsResFileName,
     int* arr        = (int*)calloc(to, sizeof(*arr));
     int* sortedArr  = (int*)calloc(to, sizeof(*sortedArr));
 
+    assert(arr);
+    assert(sortedArr);
+
     for (size_t heapRank = 2; heapRank <= 15; ++heapRank)
     {
         snprintf(outFileName, MAX_FILE_NAME_SIZE, "%s_%zu", testsResFileName, heapRank);
@@ -155,7 +162,10 @@ void TestIntroSort(const char* testsFromDir, const char* testsResFileName,
     int* arr        = (int*)calloc(to, sizeof(*arr));
     int* sortedArr  = (int*)calloc(to, sizeof(*sortedArr));
 
-    FILE* outStream = fopen(testsResFileName, "a");
+    assert(arr);
+    assert(sortedArr);
+    
+    FILE* outStream = fopen(testsResFileName, "w");
     assert(outStream);
     fprintf(stderr, "out file name - %s\n", testsResFileName);
     for (double recursionDepthC = 0.1; recursionDepthC < 20; recursionDepthC += 0.1)

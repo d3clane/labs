@@ -11,7 +11,8 @@ static void MSDSortCall(int* arr, size_t left, size_t right, size_t byteId, int*
 void LSDSort(int* arr, size_t arrSize)
 {
     int* tmpRes = (int*) calloc(arrSize, sizeof(*tmpRes));
-
+    assert(tmpRes);
+    
 #define PREF_CNT_ARR_SIZE 256
 
     static size_t prefCnt[PREF_CNT_ARR_SIZE] = {};
@@ -46,6 +47,7 @@ void LSDSort(int* arr, size_t arrSize)
 void MSDSort(int* arr, size_t arrSize)
 {
     int* tmpResBuffer = (int*)calloc(arrSize, sizeof(*tmpResBuffer));
+    assert(tmpResBuffer);
 
     MSDSortCall(arr, 0, arrSize, sizeof(int), tmpResBuffer);
 

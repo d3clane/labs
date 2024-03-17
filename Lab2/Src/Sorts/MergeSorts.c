@@ -12,6 +12,7 @@ static inline size_t Min(size_t val1, size_t val2);
 void RecursiveMergeSort(int* arr, const size_t arrSize)
 {
     int* tmpBuffer = (int*)calloc(arrSize, sizeof(*tmpBuffer));
+    assert(tmpBuffer);
 
     RecursiveMergeSortCall(arr, 0, arrSize, tmpBuffer);
 
@@ -22,7 +23,8 @@ void RecursiveMergeSort(int* arr, const size_t arrSize)
 void IterativeMergeSort(int* arr, const size_t arrSize)
 {
     int* tmpBuffer = (int*)calloc(arrSize, sizeof(*tmpBuffer));
-
+    assert(tmpBuffer);
+    
     for (size_t blockSz = 1; blockSz < arrSize; blockSz *= 2)
     {
         for (size_t leftBlockPos = 0; leftBlockPos + blockSz < arrSize; leftBlockPos += 2 * blockSz)

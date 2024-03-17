@@ -7,6 +7,8 @@ void HeapSortTestRank(int* arr, size_t arrSize, size_t heapRank)
 
     for (size_t i = arrSize - 1; i + 1 > 0; --i)
         arr[i] = HeapExtractMax(&heap);
+    
+    HeapDtor(&heap);
 }
 
 void HeapSort(int* arr, size_t arrSize)
