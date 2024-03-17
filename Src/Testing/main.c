@@ -110,7 +110,6 @@ int main()
     TestSort("Tests/big_tests", "TestsResults/Point8/MSD.out", 
                                             0, 1000000, 10000, 1, MSDSort);
     
-    */
 
    //-----------------------Point 9-------------------------------------------
 
@@ -131,4 +130,6 @@ int main()
 
    TestSort("Tests/big_tests", "TestsResults/Point9/QsortStd.out",
                                             0, 1000000, 10000, 1, QsortStd);
+
+    */
 }
