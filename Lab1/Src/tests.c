@@ -3,7 +3,7 @@
 
 #include "tests.h"
 #include "Array/stackOnArr.h"
-//#include "List/stackOnList.h"
+#include "List/stackOnList.h"
 
 static const int StandardSize = 1e6;
 static const size_t testRepetitionRate = 5;

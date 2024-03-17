@@ -67,4 +67,4 @@ size_t StackGetSize(Stack* stk)
     return stk->data.size;
 }
 
-#endif 
+#endif
