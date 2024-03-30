@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
@@ -6,7 +7,7 @@
 static void HeapSiftUp  (Heap* heap, size_t valPos);
 static void HeapSiftDown(Heap* heap, size_t valPos);
 
-static inline int HeapGetFatherPos(Heap* heap, size_t valPos); //TODO: посмотреть valPos -> size_t
+static inline int HeapGetFatherPos(Heap* heap, size_t valPos);
 static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos);
 
 static inline void   Swap(int*   val1, int*   val2);
@@ -22,6 +23,8 @@ Heap HeapCtor(size_t heapSize, size_t heapRank)
         .heapRank = heapRank,
     };
 
+    assert(heap.heapData);
+    
     return heap;
 }
 
