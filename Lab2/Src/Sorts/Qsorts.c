@@ -241,8 +241,8 @@ static void   PartitionTernary(int* arr, size_t left, size_t right,
 static inline void Swap(int* val1, int* val2)
 {
     int temp = *val1;
-               *val1 = *val2;
-                       *val2 = temp;
+    *val1    = *val2;
+    *val2    = temp;
 }
 
 static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right)
