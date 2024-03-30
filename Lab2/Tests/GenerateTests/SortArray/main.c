@@ -19,12 +19,19 @@ int main(const int argc, const char* argv[])
     assert(argvValEndPtr != argv[1]);
 
     int* inputArray = (int*)calloc(arraySize, sizeof(*inputArray));
+    assert(inputArray);
 
     for (size_t i = 0; i < arraySize; ++i)
-        scanf("%d", inputArray + i);
+    {
+        int scanfErr = scanf("%d", inputArray + i);
+
+        assert(scanfErr != EOF);
+    }
 
     qsort(inputArray, arraySize, sizeof(*inputArray), QsortCmp);
 
     for (size_t i = 0; i < arraySize; ++i)
         printf("%d ", inputArray[i]);
+
+    free(inputArray);
 }
