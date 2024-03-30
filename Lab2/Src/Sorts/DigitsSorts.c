@@ -17,7 +17,9 @@ void LSDSort(int* arr, size_t arrSize)
 
     static size_t prefCnt[PREF_CNT_ARR_SIZE] = {};
 
-    for (uint8_t shift = 0; shift < 64; shift += 8)
+    static const uint8_t bitsPerByte = 8;
+    
+    for (uint8_t shift = 0; shift < sizeof(int) * bitsPerByte; shift += bitsPerByte)
     {
         memset(prefCnt, 0, sizeof(prefCnt));
 
@@ -61,7 +63,9 @@ static void MSDSortCall(int* arr, size_t left, size_t right, size_t byteId, int*
     if (byteId == 0 || left + 1 >= right)
         return;
 
-    uint8_t shift = (uint8_t)(byteId - 1) * 8;
+    static const uint8_t bitsPerByte = 8;
+
+    uint8_t shift = (uint8_t)(byteId - 1) * bitsPerByte;
 
     size_t prefCnt[PREF_CNT_ARR_SIZE] = {};
 
@@ -92,6 +96,8 @@ static void MSDSortCall(int* arr, size_t left, size_t right, size_t byteId, int*
 static inline uint8_t GetByte(int value, uint8_t shift)
 {
     assert(value >= 0);
+
+    static const uint8_t oneByteMask = 0xff;
     
-    return (uint8_t)((value >> shift) & 0xff);
+    return (uint8_t)((value >> shift) & oneByteMask);
 }
