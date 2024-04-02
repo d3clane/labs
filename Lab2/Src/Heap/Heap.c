@@ -4,6 +4,8 @@
 
 #include "Heap.h"
 
+#define NO_NODE_FOUND
+
 static void HeapSiftUp  (Heap* heap, size_t valPos);
 static void HeapSiftDown(Heap* heap, size_t valPos);
 
@@ -42,7 +44,9 @@ Heap HeapBuild(int* arr, size_t arrSize, size_t heapRank)
 
 Heap* HeapDtor(Heap* heap)
 {
-    free(heap->heapData);
+    if (heap->heapData != NULL)
+        free(heap->heapData);
+
     heap->heapData = NULL;
     heap->dataEndPos  = 0;
     heap->heapRank    = 0;
@@ -79,7 +83,7 @@ static void HeapSiftUp  (Heap* heap, size_t valPos)
     size_t curPos = valPos;
 
     int fatherPos = HeapGetFatherPos(heap, curPos);
-    while (fatherPos != -1 && heap->heapData[curPos] > heap->heapData[fatherPos])
+    while (fatherPos != NO_NODE_FOUND && heap->heapData[curPos] > heap->heapData[fatherPos])
     {
         Swap(&heap->heapData[curPos], &heap->heapData[fatherPos]);
 
@@ -93,7 +97,7 @@ static void HeapSiftDown(Heap* heap, size_t valPos)
     size_t curPos = valPos;
 
     int maxChildPos = HeapGetMaxSonPos(heap, curPos);
-    while (maxChildPos != -1 && heap->heapData[curPos] < heap->heapData[maxChildPos])
+    while (maxChildPos != NO_NODE_FOUND && heap->heapData[curPos] < heap->heapData[maxChildPos])
     {
         Swap(&heap->heapData[curPos], &heap->heapData[maxChildPos]);
 
@@ -105,7 +109,7 @@ static void HeapSiftDown(Heap* heap, size_t valPos)
 static inline int HeapGetFatherPos(Heap* heap, size_t valPos)
 {
     if (valPos == 0)
-        return -1;
+        return NO_NODE_FOUND;
 
     return (int)((valPos - 1) / heap->heapRank);
 }
@@ -117,7 +121,7 @@ static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos)
     // sons : [maxSonPos, endSonPos)
 
     if (maxSonPos >= heap->dataEndPos)
-        return -1;
+        return NO_NODE_FOUND;
     
     for (size_t sonPos = maxSonPos + 1; sonPos < endSonPos; ++sonPos)
     {
