@@ -4,7 +4,7 @@
 
 #include "Heap.h"
 
-#define NO_NODE_FOUND
+#define NO_NODE_FOUND -1
 
 static void HeapSiftUp  (Heap* heap, size_t valPos);
 static void HeapSiftDown(Heap* heap, size_t valPos);
@@ -32,6 +32,8 @@ Heap HeapCtor(size_t heapSize, size_t heapRank)
 
 Heap HeapBuild(int* arr, size_t arrSize, size_t heapRank)
 {
+    assert(arr);
+
     Heap heap       = HeapCtor(arrSize, heapRank);
     heap.heapData   = arr;
     heap.dataEndPos = arrSize;
@@ -44,6 +46,8 @@ Heap HeapBuild(int* arr, size_t arrSize, size_t heapRank)
 
 Heap* HeapDtor(Heap* heap)
 {
+    assert(heap);
+
     if (heap->heapData != NULL)
         free(heap->heapData);
 
@@ -56,6 +60,8 @@ Heap* HeapDtor(Heap* heap)
 
 void  HeapInsert        (Heap* heap, int val)
 {
+    assert(heap);
+
     heap->heapData[heap->dataEndPos++] = val;
 
     HeapSiftUp(heap, heap->dataEndPos - 1);
@@ -63,11 +69,15 @@ void  HeapInsert        (Heap* heap, int val)
 
 int HeapGetMax      (Heap* heap)
 {
+    assert(heap);
+
     return heap->heapData[0];
 }
 
 int HeapExtractMax  (Heap* heap)
 {
+    assert(heap);
+
     int MaxVal = HeapGetMax(heap);
     heap->dataEndPos--;
 
@@ -80,6 +90,8 @@ int HeapExtractMax  (Heap* heap)
 
 static void HeapSiftUp  (Heap* heap, size_t valPos)
 {
+    assert(heap);
+
     size_t curPos = valPos;
 
     int fatherPos = HeapGetFatherPos(heap, curPos);
@@ -94,6 +106,8 @@ static void HeapSiftUp  (Heap* heap, size_t valPos)
 
 static void HeapSiftDown(Heap* heap, size_t valPos)
 {
+    assert(heap);
+
     size_t curPos = valPos;
 
     int maxChildPos = HeapGetMaxSonPos(heap, curPos);
@@ -108,6 +122,8 @@ static void HeapSiftDown(Heap* heap, size_t valPos)
 
 static inline int HeapGetFatherPos(Heap* heap, size_t valPos)
 {
+    assert(heap);
+
     if (valPos == 0)
         return NO_NODE_FOUND;
 
@@ -116,6 +132,8 @@ static inline int HeapGetFatherPos(Heap* heap, size_t valPos)
 
 static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos)
 {
+    assert(heap);
+
     size_t maxSonPos    = valPos * heap->heapRank + 1;
     size_t endSonPos    = Min((valPos + 1) * heap->heapRank + 1, heap->dataEndPos);
     // sons : [maxSonPos, endSonPos)
@@ -134,6 +152,9 @@ static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos)
 
 static inline void Swap(int* val1, int* val2)
 {
+    assert(val1);
+    assert(val2);
+    
     int tmp = *val1;
     *val1 = *val2;
     *val2 = tmp;
