@@ -40,7 +40,14 @@ int StackGetBack(Stack* stack, int* error);
 size_t StackGetSize(Stack* stack);
 void StackClear(Stack* stack);
 
+void ProcessQueries();
+
 int main()
+{
+    ProcessQueries();
+}
+
+void ProcessQueries()
 {
     Stack stack = StackCtor();
     char commandName[6] = "";
@@ -92,7 +99,6 @@ int main()
 
     StackDtor(&stack);
 }
-
 
 Array  ArrayCtor()
 {
