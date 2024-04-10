@@ -52,7 +52,9 @@ int main()
         if (strcmp(commandName, "push") == 0)
         {
             int value = 0;
-            scanf("%d", &value);
+            int scanfRes = scanf("%d", &value);
+            assert(scanfRes == 1);
+            
             StackPush(&stack, value);
             printf("ok\n");
         }
