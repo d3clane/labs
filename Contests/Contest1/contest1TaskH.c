@@ -53,16 +53,16 @@ void Swap(int* val1, int* val2)
                        *val2 = temp;
 }
 
-int main()
+size_t GetInput(int** arr)
 {
-    srand(time(NULL));
+    assert(arr);
 
     size_t arrSize = 0;
     int scanfRes = scanf("%zu", &arrSize);
     assert(scanfRes == 1);
 
-	int* arr = (int*)calloc(arrSize, sizeof(*arr));
-    assert(arr);
+	*arr = (int*)calloc(arrSize, sizeof(**arr));
+    assert(*arr);
 
     for (size_t i = 0; i < arrSize; ++i)
     {
@@ -70,10 +70,25 @@ int main()
         assert(scanfResult == 1);
     }
 
-    QuickSort(arr, 0, arrSize - 1);
+    return arrSize;
+}
 
+void PrintArray(int* arr, size_t arrSize)
+{
     for (size_t i = 0; i < arrSize; ++i)
         printf("%d ", arr[i]);
+}
+
+int main()
+{
+    srand(time(NULL));
+
+    int* arr = NULL;
+    size_t arrSize = GetInput(&arr);
+
+    QuickSort(arr, 0, arrSize - 1);
+
+    PrintArray(arr, arrSize);
 	
 	free(arr);
     return 0;
