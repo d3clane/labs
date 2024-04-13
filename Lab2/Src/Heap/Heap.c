@@ -8,7 +8,7 @@
 
 static void HeapSiftDown(Heap* heap, size_t valPos);
 
-static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos);
+static inline int HeapGetMaxSonPos(const Heap* heap, size_t valPos);
 
 static inline void   Swap(int*   val1, int*   val2);
 static inline size_t Min (size_t val1, size_t val2);
@@ -94,7 +94,7 @@ static void HeapSiftDown(Heap* heap, size_t valPos)
     }
 }
 
-static inline int HeapGetMaxSonPos(Heap* heap, size_t valPos)
+static inline int HeapGetMaxSonPos(const Heap* heap, size_t valPos)
 {
     assert(heap);
 
@@ -124,7 +124,7 @@ static inline void Swap(int* val1, int* val2)
     *val2 = tmp;
 }
 
-static inline size_t  Min (size_t  val1, size_t  val2)
+static inline size_t  Min (size_t val1, size_t val2)
 {
     return val1 < val2 ? val1 : val2;
 }
