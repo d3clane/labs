@@ -1,8 +1,8 @@
+#include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
-#include <stdbool.h>
 
 typedef struct Array
 {
@@ -52,7 +52,7 @@ void ProcessQueries()
     Stack stack = StackCtor();
     char commandName[6] = "";
 
-    while (1)
+    while (true)
     {
         scanf("%s", commandName);
         int error = 0;
