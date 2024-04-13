@@ -5,7 +5,9 @@
 
 typedef struct Heap
 {
-    int*     heapData;
+    int*   heapData;
+    
+    size_t heapCapacity;
     size_t dataEndPos;
 
     size_t heapRank;
