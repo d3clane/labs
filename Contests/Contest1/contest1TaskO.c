@@ -65,6 +65,8 @@ static void HeapSiftUp(Heap* heap, size_t valPos);
 
 static void HeapSiftDown(Heap* heap, size_t valPos);
 
+static inline long long HeapGetLeftSonPos(long long valPos);
+
 static inline long long HeapGetFatherPos(long long valPos);
 
 static inline long long HeapGetMinSonPos(Heap* heap, long long valPos);
@@ -72,6 +74,8 @@ static inline long long HeapGetMinSonPos(Heap* heap, long long valPos);
 static void Swap(HeapDataType* val1, HeapDataType* val2);
 
 void ProcessQueries();
+
+static inline bool ArrayNeedDecreasing(Array* arr);
 
 int main()
 {
@@ -86,10 +90,13 @@ void ProcessQueries()
 
     Heap heap = HeapCtor(q);
 
+#define MAX_COMMAND_LEN 20
+#define MAX_COMMAND_FORMAT_STR "19"
+
     char command[20] = "";
     while (q--)
     {
-        scanfRes = scanf("%s", command);
+        scanfRes = scanf("%" MAX_COMMAND_FORMAT_STR "s", command);
         assert(scanfRes == 1);
 
         if (strcmp(command, "insert") == 0)
@@ -186,7 +193,7 @@ long long ArrayPopBack(Array* arr)
 {
     assert(arr);
 
-    if (arr->size * 4 <= arr->capacity)
+    if (ArrayNeedDecreasing(arr))
         arr = ArraySizeDecrease(arr);
 
     if (arr->size == 0)
@@ -248,14 +255,25 @@ static Array* ArraySizeIncrease(Array* arr)
 static Array* ArraySizeDecrease(Array* arr)
 {
     assert(arr);
-    assert(arr->size * 4 <= arr->capacity);
+    assert(ArrayNeedDecreasing(arr));
 
-    arr->capacity /= 2;
+    static const size_t decreasingCoeff = 2;
+
+    arr->capacity /= decreasingCoeff;
 
     arr->data = (HeapDataType*) realloc(arr->data, arr->capacity * sizeof(*arr->data));
     assert(arr->data);
 
     return arr;
+}
+
+static inline bool ArrayNeedDecreasing(Array* arr)
+{
+    assert(arr);
+
+    static const size_t decreasingAlpha = 4; // decreasingAlpha = arr->cap / arr->size
+
+    return arr->size * decreasingAlpha <= arr->capacity;
 }
 
 HeapDataType HeapDataTypeCtor(long long value, size_t commandId)
@@ -400,14 +418,19 @@ static inline long long HeapGetFatherPos(long long valPos)
     return (valPos - 1) / 2;
 }
 
+static inline long long HeapGetLeftSonPos(long long valPos)
+{
+    return valPos * 2 + 1;
+}
+
 static inline long long HeapGetMinSonPos(Heap* heap, long long valPos)
 {
     assert(heap);
 
-    if (valPos * 2 + 1 >= heap->heapData.size)
+    if (HeapGetLeftSonPos(valPos) >= heap->heapData.size)
         return -1;
 
-    long long minPos = valPos * 2 + 1;
+    long long minPos = HeapGetLeftSonPos(valPos);
 
     if (minPos + 1 >= heap->heapData.size ||
         heap->heapData.data[minPos].value <= heap->heapData.data[minPos + 1].value)
