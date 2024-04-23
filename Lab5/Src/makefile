@@ -1,0 +1,42 @@
+CXX = g++-13
+CXXFLAGS = -D _DEBUG -D INT_TYPE=1 -D FLOAT_TYPE=2 -D STR_TYPE=3 -D TYPE=FLOAT_TYPE -std=c++17 -O3
+
+HOME = $(shell pwd)
+CXXFLAGS += -I $(HOME)
+
+PROGRAMDIR = build/bin
+TARGET = tester
+OBJECTDIR = build
+DOXYFILE = Others/Doxyfile
+
+TESTING_DIR     = Testing
+TESTING_HEADERS = $(TESTING_DIR)/Testing.h
+TESTING_CPP		= Testing.c main.c 
+TESTING_OBJ     = $(TESTING_CPP:%.c=$(OBJECTDIR)/%.o)
+
+HASHES_DIR 	    = Hash
+HASHES_CPP	    = Hash.c
+HASHES_OBJ		= $(HASHES_CPP:%.c=$(OBJECTDIR)/%.o)
+.PHONY: all docs clean install
+	
+all: $(PROGRAMDIR)/$(TARGET)
+	@cp $(PROGRAMDIR)/$(TARGET) ../
+
+$(PROGRAMDIR)/$(TARGET): $(TESTING_OBJ) $(HASHES_OBJ)
+	$(CXX) $^ -o $(PROGRAMDIR)/$(TARGET) $(CXXFLAGS)
+
+$(OBJECTDIR)/%.o : $(TESTING_DIR)/%.c
+	$(CXX) -c $< -o $@ $(CXXFLAGS) 
+
+$(OBJECTDIR)/%.o : $(HASHES_DIR)/%.c
+	$(CXX) -c $< -o $@ $(CXXFLAGS) 
+
+docs: 
+	doxygen $(DOXYFILE)
+
+clean:
+	rm -rf $(OBJECTDIR)/*.o
+
+buildDirs:
+	mkdir $(OBJECTDIR)
+	mkdir $(PROGRAMDIR)

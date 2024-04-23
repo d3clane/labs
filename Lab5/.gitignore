@@ -1,0 +1,7 @@
+build/
+Tests/FloatHash
+Tests/IntHash
+Tests/StrHash
+TestsResults/
+tester
+*.DS_Store
