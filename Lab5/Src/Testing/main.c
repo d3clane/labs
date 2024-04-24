@@ -58,6 +58,25 @@ int main()
 */
     //------------------------Hash table-----------------------------
 
-    TestLoadFactor("Tests/IntHash/1000000_1.in", "TestsResults/LoadFactor/LoadFactor.out",
-                   1000000, 0.1, 0.9, KnuthHashInt);
+#define OUT_DIR "TestsResults/LoadFactor/LoadFactor"
+
+    float maxLoadFactor  = 0.9;
+    float minLoadFactor  = 0.01;
+    float loadFactorStep = 0.01;
+#if defined(LIST_TABLE)
+    const char* outFileName = OUT_DIR "List.out";
+    minLoadFactor  = 0.1;
+    maxLoadFactor  = 5;
+    loadFactorStep = 0.05;
+#elif defined(OPEN_TABLE) && PROBE_FUNC == LINEAR
+    const char* outFileName = OUT_DIR "Linear.out";
+#elif defined(OPEN_TABLE) && PROBE_FUNC == QUADRATIC
+    const char* outFileName = OUT_DIR "Quadratic.out";
+#else
+    const char* outFileName = OUT_DIR "Hash.out";
+#endif
+
+    TestLoadFactor("Tests/IntHash/1000000_1.in", outFileName,
+                   1000000, minLoadFactor, maxLoadFactor, loadFactorStep, KnuthHashInt);
+
 }

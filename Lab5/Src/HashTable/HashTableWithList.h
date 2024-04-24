@@ -16,9 +16,11 @@ typedef struct
     size_t numberOfElementsInserted;
 
     HashFuncType HashFunc;
+
+    float loadFactor;
 } HashTableType;
 
-HashTableType* HashTableCtor(size_t capacity, HashFuncType HashFunc);
+HashTableType* HashTableCtor(size_t capacity, HashFuncType HashFunc, float loadFactor);
 
 void HashTableDtor(HashTableType* table);
 

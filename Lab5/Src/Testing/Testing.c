@@ -6,6 +6,7 @@
 #include <time.h>
 
 #include "HashTable/HashTableOpen.h"
+#include "HashTable/HashTableWithList.h"
 #include "Testing.h"
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize);
@@ -57,11 +58,10 @@ double TestHash(const char* inFileName, const char* outFileName,
     return (double)time / CLOCKS_PER_SEC;
 }
 
-#ifdef OPEN_TABLE 
-
 void TestLoadFactor(const char* inFileName, const char* outFileName,
                     size_t numberOfValues,
-                    const float minLoadFactor, const float maxLoadFactor,
+                    const float minLoadFactor, const float maxLoadFactor, 
+                    const float loadFactorStep,
                     HashFuncType Hash)
 {
     unsigned int* arr  = (unsigned int*)calloc(numberOfValues, sizeof(*arr));
@@ -76,7 +76,8 @@ void TestLoadFactor(const char* inFileName, const char* outFileName,
     FILE* outStream = fopen(outFileName, "w");
     assert(outStream);
 
-    for (float loadFactor = minLoadFactor; loadFactor <= maxLoadFactor; loadFactor += 0.01)
+    for (float loadFactor = minLoadFactor; loadFactor <= maxLoadFactor; 
+         loadFactor += loadFactorStep)
     {
         HashTableType* table = HashTableCtor(2, Hash, loadFactor);
         
@@ -90,8 +91,6 @@ void TestLoadFactor(const char* inFileName, const char* outFileName,
         HashTableDtor(table);
     }
 }
-
-#endif
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {

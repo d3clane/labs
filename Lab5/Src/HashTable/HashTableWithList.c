@@ -50,12 +50,13 @@ void HashTableDtor(HashTableType *table)
     free(table);
 }
 
-HashTableType *HashTableCtor(size_t capacity, HashFuncType HashFunc)
+HashTableType *HashTableCtor(size_t capacity, HashFuncType HashFunc, float loadFactor)
 {
     HashTableType *table = (HashTableType *) calloc(1, sizeof(*table));
     assert(table);
 
-    table->HashFunc = HashFunc;
+    table->HashFunc   = HashFunc;
+    table->loadFactor = loadFactor;
 
     table->numberOfBuckets = GetPrimeCapacity(capacity);
 
@@ -70,18 +71,8 @@ HashTableType *HashTableCtor(size_t capacity, HashFuncType HashFunc)
 
 static inline bool HashTableNeedIncreasing(HashTableType *table)
 {
-    static const float increaseLoadFactor = 0.7f;
-
     return (float) table->numberOfElementsInserted >
-           increaseLoadFactor * (float) table->numberOfBuckets;
-}
-
-static inline bool HashTableNeedDecreasing(HashTableType *table)
-{
-    static const float decreasingLoadFactor = 0.1f;
-
-    return (float) table->numberOfElementsInserted <
-           decreasingLoadFactor * (float) table->numberOfBuckets;
+           table->loadFactor * (float) table->numberOfBuckets;
 }
 
 static void HashTableCapacityIncrease(HashTableType *table)
