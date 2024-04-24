@@ -1,12 +1,17 @@
-#include "Testing.h"
-
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "Testing.h"
 #include "Hash/Hash.h"
+#include "HashTable/HashTableOpen.h"
+#include "HashTable/HashTableWithList.h"
 
 int main()
 {
-    //-----------------------Int Hashes testing-------------------------------------------
+    //-----------------------Hashes testing-------------------------------------------
 
+/*
 #if TYPE == INT_TYPE
     printf("Mod - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
                                    "TestsResults/IntHash/Mod.out",
@@ -50,4 +55,6 @@ int main()
                                     "TestsResults/StrHash/CRC32.out",
                                     1000000, CRC32Hash));
 #endif
+*/
+    //------------------------Hash table-----------------------------
 }

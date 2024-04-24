@@ -7,7 +7,7 @@
 
 static ListElem* ListElemCtor();
 static ListElem* ListElemDtor(ListElem* elem);
-static ListElem* ListElemInit(int val, ListElem* next);
+static ListElem* ListElemInit(int key, ListElem* next);
 
 List ListCtor()
 {
@@ -40,13 +40,13 @@ List* ListDtor(List* list)
     return NULL;
 }
 
-ListElem* ListInsert  (List* list, ListElem* anchorElement, int val)
+ListElem* ListInsert  (List* list, ListElem* anchorElement, int key)
 {
     assert(list);
     assert(anchorElement);
-    assert(val);
+    assert(key);
 
-    ListElem* elem = ListElemInit(val, anchorElement->nextElem);
+    ListElem* elem = ListElemInit(key, anchorElement->nextElem);
     anchorElement->nextElem = elem;
 
     list->size++;
@@ -73,7 +73,7 @@ int ListPopHead(List* list)
     return 0;
 }
 
-void ListErase(List* list, int val)
+void ListErase(List* list, int key)
 {
     assert(list);
     assert(list->begin);
@@ -85,7 +85,7 @@ void ListErase(List* list, int val)
     {
         assert(elem);
         assert(prevElem);
-        if (elem->value == val)
+        if (elem->key == key)
         {
             prevElem->nextElem = elem->nextElem;
             ListElemDtor(elem);
@@ -96,7 +96,7 @@ void ListErase(List* list, int val)
     }
 }
 
-ListElem* ListFindVal(List* list, int val)
+ListElem* ListFindkey(List* list, int key)
 {
     assert(list);
     assert(list->begin);
@@ -106,10 +106,42 @@ ListElem* ListFindVal(List* list, int val)
     while (elem != list->begin)
     {
         assert(elem);
-        if (elem->value == val)
+        if (elem->key == key)
         {
             return elem;
         }
+
+        elem = elem->nextElem;
+    }
+
+    return NULL;
+}
+
+int ListGetkey(ListElem* elem)
+{
+    assert(elem);
+
+    return elem->key;
+}
+
+ListElem* ListGetHead(List* list)
+{
+    assert(list);
+
+    return list->begin->nextElem;
+}
+
+ListElem* ListFindVal(List* list, int key)
+{
+    assert(list);
+    assert(list->begin);
+
+    ListElem* elem = list->begin->nextElem;
+
+    while (elem != list->begin)
+    {
+        if (elem->key == key)
+            return elem;
 
         elem = elem->nextElem;
     }
@@ -121,14 +153,7 @@ int ListGetVal(ListElem* elem)
 {
     assert(elem);
 
-    return elem->value;
-}
-
-ListElem* ListGetHead(List* list)
-{
-    assert(list);
-
-    return list->begin->nextElem;
+    return elem->key;
 }
 
 static ListElem* ListElemCtor()
@@ -145,23 +170,22 @@ static ListElem* ListElemDtor(ListElem* elem)
 
     elem->nextElem = NULL;
 
-    free(elem->value);
-    elem->value     = NULL;
+    elem->key = 0;
 
     free(elem);
     return NULL;
 }
 
-static ListElem* ListElemInit(int val, ListElem* next)
+static ListElem* ListElemInit(int key, ListElem* next)
 {
-    assert(val);
+    assert(key);
 
     ListElem* elem = ListElemCtor();
 
     if (elem == NULL)
         return NULL;
 
-    elem->value = val;
+    elem->key = key;
     elem->nextElem = next;
 
     return elem;

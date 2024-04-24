@@ -8,4 +8,5 @@
 double TestHash(const char* inFileName, const char* outFileName,
                 size_t numberOfValues, HashFuncType hash);
 
+
 #endif

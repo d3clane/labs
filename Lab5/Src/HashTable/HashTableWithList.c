@@ -1,9 +1,13 @@
+#ifdef LIST_TABLE
+
+#include <assert.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 #include "HashTableWithList.h"
 
 static inline size_t
-BucketsGetBucketPos(HashFuncType hashFunc, const size_t numberOfBuckets, int key);
+BucketsGetBucketPos(HashFuncType HashFunc, const size_t numberOfBuckets, int key);
 
 static inline size_t HashTableGetBucketPos(HashTableType *table, const int key);
 
@@ -34,24 +38,24 @@ void HashTableDtor(HashTableType *table)
     if (table->buckets)
     {
         for (size_t i = 0; i < table->numberOfBuckets; ++i)
-            HtListDtor(table->buckets + i);
+            ListDtor(table->buckets + i);
 
         free(table->buckets);
     }
 
     table->buckets = NULL;
     table->numberOfBuckets = 0;
-    table->hashFunc = NULL;
+    table->HashFunc = NULL;
 
     free(table);
 }
 
-HashTableType *HashTableCtor(size_t capacity, HashFuncType hashFunc)
+HashTableType *HashTableCtor(size_t capacity, HashFuncType HashFunc)
 {
     HashTableType *table = (HashTableType *) calloc(1, sizeof(*table));
     assert(table);
 
-    table->hashFunc = hashFunc;
+    table->HashFunc = HashFunc;
 
     table->numberOfBuckets = GetPrimeCapacity(capacity);
 
@@ -103,13 +107,13 @@ static void HashTableCapacityIncrease(HashTableType *table)
         {
             int val = ListGetVal(elem);
 
-            size_t bucketPos = BucketsGetBucketPos(table->hashFunc, newCap, elem->value);
+            size_t bucketPos = BucketsGetBucketPos(table->HashFunc, newCap, elem->key);
             ListInsert(tmpBuckets + bucketPos, tmpBuckets[bucketPos].begin, val);
 
             elem = elem->nextElem;
         }
         
-        HtListDtor(table->buckets + i);
+        ListDtor(table->buckets + i);
     }
 
     free(table->buckets);
@@ -154,12 +158,14 @@ bool HashTableGetValue(HashTableType *table, const int key)
 }
 
 static inline size_t
-BucketsGetBucketPos(HashFuncType hashFunc, size_t numberOfBuckets, const int key)
+BucketsGetBucketPos(HashFuncType HashFunc, size_t numberOfBuckets, const int key)
 {
-    return (size_t) hashFunc(key) % numberOfBuckets;
+    return (size_t) HashFunc(key) % numberOfBuckets;
 }
 
 static inline size_t HashTableGetBucketPos(HashTableType *table, const int key)
 {
-    return BucketsGetBucketPos(table->hashFunc, table->numberOfBuckets, key);
+    return BucketsGetBucketPos(table->HashFunc, table->numberOfBuckets, key);
 }
+
+#endif

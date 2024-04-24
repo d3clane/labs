@@ -34,7 +34,12 @@ size_t KnuthHashInt(unsigned int value)
     static const size_t b = 1337;
     static const size_t p = 1e9 + 7;
 
-    return (size_t)(a * value + b) % p;
+    return KnuthHash(value, a, b, p);
+}
+
+size_t KnuthHash(unsigned int value, const size_t a, const size_t b, const size_t mod)
+{
+    return (size_t)(a * value + b) % mod;
 }
 
 size_t FloatToIntHash  (float value)

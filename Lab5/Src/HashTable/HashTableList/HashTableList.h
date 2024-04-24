@@ -5,7 +5,7 @@
 
 typedef struct ListElem
 {
-    int value;
+    int key;
 
     struct ListElem* nextElem;
 } ListElem;
@@ -20,9 +20,9 @@ typedef struct List
 List  ListCtor();
 List* ListDtor(List* list);
 
-ListElem* ListInsert(List* list, ListElem* anchorElement, int val);
-void      ListErase(List* list, int val);
-ListElem* ListFindVal(List* list, int val);
+ListElem* ListInsert(List* list, ListElem* anchorElement, int key);
+void      ListErase(List* list, int key);
+ListElem* ListFindVal(List* list, int key);
 
 int ListPopHead     (List* list);
 

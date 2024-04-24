@@ -21,6 +21,8 @@ size_t ModHashInt   (unsigned int value);
 size_t BitHashInt   (unsigned int value);
 size_t KnuthHashInt (unsigned int value);
 
+size_t KnuthHash(unsigned int value, const size_t a, const size_t b, const size_t mod);
+
 size_t FloatToIntHash  (float value);
 size_t BitHashFloat    (float value);
 size_t MantissaHash    (float value);
