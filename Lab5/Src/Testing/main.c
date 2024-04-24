@@ -57,4 +57,7 @@ int main()
 #endif
 */
     //------------------------Hash table-----------------------------
+
+    TestLoadFactor("Tests/IntHash/1000000_1.in", "TestsResults/LoadFactor/LoadFactor.out",
+                   1000000, 0.1, 0.9, KnuthHashInt);
 }

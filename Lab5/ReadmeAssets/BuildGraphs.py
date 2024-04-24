@@ -1,19 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = np.loadtxt('TestsResults/StrHash/Sum.out')
+data1 = np.loadtxt('TestsResults/LoadFactor/LoadFactor.out', delimiter=' ')
+x1, y1 = data1[:, 0], data1[:, 1]
 
-values_col1 = data[:, 0]
-heights_col2 = data[:, 1]
+plt.figure()
+plt.plot(x1, y1, 'b-', label='Load factor')
 
-values_col1_clipped = np.clip(values_col1, 0, 5000)
-
-plt.bar(values_col1_clipped, heights_col2, color='skyblue', edgecolor='black')
-plt.xlabel('list id')
-plt.ylabel('list size')
-plt.title('histogram')
+plt.xlabel('load factor')
+plt.ylabel('time')
 plt.grid(True)
+plt.legend()
 
-#plt.ylim(top = 25)
-
-plt.savefig('ReadmeAssets/imgs/SumClose.png')
+plt.savefig('ReadmeAssets/imgs/LoadFactor.png')

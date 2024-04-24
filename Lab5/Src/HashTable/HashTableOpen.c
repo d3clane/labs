@@ -21,7 +21,7 @@ static inline size_t QuadraticProbeNextStep (size_t prevVal, size_t hashTableSiz
 static inline size_t HashProbeNextStep      (size_t prevVal, size_t hashTableSize, 
                                              size_t secondHashRes);
 
-static inline bool HashTableNeedIncreasing(HashTableType* table, float limitLoadFactor);
+static inline bool HashTableNeedIncreasing(HashTableType* table);
 static void        HashTableIncreaseSize  (HashTableType* table);
 
 static void HashTableDataMoveElem(HashTableType* newTable, HashTableElem* elem);
@@ -61,12 +61,13 @@ void HashTableElemDtor(HashTableElem* elem)
     elem->value = 0;
 }
 
-HashTableType* HashTableCtor(size_t capacity, HashFuncType HashFunc)
+HashTableType* HashTableCtor(size_t capacity, HashFuncType HashFunc, float loadFactor)
 {
     HashTableType *table = (HashTableType *) calloc(1, sizeof(*table));
     assert(table);
 
-    table->HashFunc  = HashFunc;
+    table->HashFunc   = HashFunc;
+    table->loadFactor = loadFactor;
 
     table->dataCapacity = GetPower2Capacity(capacity);
     table->data = (HashTableElem*)calloc(table->dataCapacity, sizeof(*table->data));
@@ -100,7 +101,7 @@ void HashTableInsert(HashTableType* table, const int key)
 {
     assert(table);
 
-    if (HashTableNeedIncreasing(table, 0.7)) //TODO: loadFactor 0.7
+    if (HashTableNeedIncreasing(table))
         HashTableIncreaseSize(table);
 
     HashTableElem* elem = HashTableFindElemPlace(table, key);
@@ -244,11 +245,11 @@ static inline size_t GetPower2Capacity(size_t capacity)
     return capacity;
 }
 
-static inline bool HashTableNeedIncreasing(HashTableType* table, float limitLoadFactor)
+static inline bool HashTableNeedIncreasing(HashTableType* table)
 {
     assert(table);
 
-    return table->dataDelSize + table->dataSize >= table->dataCapacity * limitLoadFactor;
+    return table->dataDelSize + table->dataSize >= table->dataCapacity * table->loadFactor;
 }
 
 static void HashTableIncreaseSize(HashTableType* table)
@@ -258,7 +259,7 @@ static void HashTableIncreaseSize(HashTableType* table)
     static const size_t increaseCoeff = 2;
     size_t newCapacity = table->dataCapacity * increaseCoeff;
 
-    HashTableType* tmpTable = HashTableCtor(newCapacity, table->HashFunc);
+    HashTableType* tmpTable = HashTableCtor(newCapacity, table->HashFunc, table->loadFactor);
     for (size_t i = 0; i < table->dataCapacity; ++i)
     {
         if (table->data[i].isDel)

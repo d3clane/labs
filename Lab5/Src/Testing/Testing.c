@@ -1,11 +1,12 @@
-#include "Testing.h"
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+
+#include "HashTable/HashTableOpen.h"
+#include "Testing.h"
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize);
 
@@ -17,8 +18,6 @@ static inline size_t HashMod(size_t (*Hash)(HashValType val), size_t MOD, HashVa
 double TestHash(const char* inFileName, const char* outFileName,
                 size_t numberOfValues, HashFuncType Hash)
 {
-    #define MAX_FILE_NAME_SIZE 256
-
     HashValType* arr  = (HashValType*)calloc(numberOfValues, sizeof(*arr));
     size_t arrSize    = numberOfValues;
     assert(arr); 
@@ -46,8 +45,6 @@ double TestHash(const char* inFileName, const char* outFileName,
     free(arr);
     free(distribution);
 
-    #undef MAX_FILE_NAME_SIZE
-
     FILE* outStream = fopen(outFileName, "w");
     assert(outStream);
 
@@ -59,6 +56,42 @@ double TestHash(const char* inFileName, const char* outFileName,
 
     return (double)time / CLOCKS_PER_SEC;
 }
+
+#ifdef OPEN_TABLE 
+
+void TestLoadFactor(const char* inFileName, const char* outFileName,
+                    size_t numberOfValues,
+                    const float minLoadFactor, const float maxLoadFactor,
+                    HashFuncType Hash)
+{
+    unsigned int* arr  = (unsigned int*)calloc(numberOfValues, sizeof(*arr));
+    size_t arrSize    = numberOfValues;
+    assert(arr); 
+
+    FILE* inStream = fopen(inFileName, "r");
+    assert(inStream);
+
+    ReadFromFile(inStream, arr, arrSize);
+
+    FILE* outStream = fopen(outFileName, "w");
+    assert(outStream);
+
+    for (float loadFactor = minLoadFactor; loadFactor <= maxLoadFactor; loadFactor += 0.01)
+    {
+        HashTableType* table = HashTableCtor(2, Hash, loadFactor);
+        
+        clock_t time = clock();
+        for (size_t i = 0; i < arrSize; ++i)
+            HashTableInsert(table, arr[i]);
+        time = clock() - time;
+
+        fprintf(outStream, "%lf %lf\n", loadFactor, (double)time / CLOCKS_PER_SEC);
+
+        HashTableDtor(table);
+    }
+}
+
+#endif
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {
