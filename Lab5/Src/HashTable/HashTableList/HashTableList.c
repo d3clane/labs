@@ -96,27 +96,6 @@ void ListErase(List* list, int key)
     }
 }
 
-ListElem* ListFindkey(List* list, int key)
-{
-    assert(list);
-    assert(list->begin);
-
-    ListElem* elem     = list->begin->nextElem;
-
-    while (elem != list->begin)
-    {
-        assert(elem);
-        if (elem->key == key)
-        {
-            return elem;
-        }
-
-        elem = elem->nextElem;
-    }
-
-    return NULL;
-}
-
 int ListGetkey(ListElem* elem)
 {
     assert(elem);
@@ -131,7 +110,7 @@ ListElem* ListGetHead(List* list)
     return list->begin->nextElem;
 }
 
-ListElem* ListFindVal(List* list, int key)
+ListElem* ListFindKey(List* list, int key)
 {
     assert(list);
     assert(list->begin);
@@ -149,7 +128,7 @@ ListElem* ListFindVal(List* list, int key)
     return NULL;
 }
 
-int ListGetVal(ListElem* elem)
+int ListGetKey(ListElem* elem)
 {
     assert(elem);
 

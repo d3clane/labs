@@ -22,11 +22,11 @@ List* ListDtor(List* list);
 
 ListElem* ListInsert(List* list, ListElem* anchorElement, int key);
 void      ListErase(List* list, int key);
-ListElem* ListFindVal(List* list, int key);
+ListElem* ListFindKey(List* list, int key);
 
 int ListPopHead     (List* list);
 
-int ListGetVal(ListElem* elem);
+int ListGetKey(ListElem* elem);
 
 ListElem* ListGetHead(List* list);
 

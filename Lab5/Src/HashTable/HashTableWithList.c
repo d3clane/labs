@@ -105,7 +105,7 @@ static void HashTableCapacityIncrease(HashTableType *table)
         
         while (elem != table->buckets[i].begin)
         {
-            int val = ListGetVal(elem);
+            int val = ListGetKey(elem);
 
             size_t bucketPos = BucketsGetBucketPos(table->HashFunc, newCap, elem->key);
             ListInsert(tmpBuckets + bucketPos, tmpBuckets[bucketPos].begin, val);
@@ -152,7 +152,7 @@ bool HashTableGetValue(HashTableType *table, const int key)
 
     size_t bucketPos = HashTableGetBucketPos(table, key);
 
-    ListElem* elem = ListFindVal(table->buckets + bucketPos, key);
+    ListElem* elem = ListFindKey(table->buckets + bucketPos, key);
 
     return elem ? true : false;
 }
