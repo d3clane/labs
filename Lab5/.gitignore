@@ -5,3 +5,4 @@ Tests/StrHash
 TestsResults/
 tester
 *.DS_Store
+.vscode
