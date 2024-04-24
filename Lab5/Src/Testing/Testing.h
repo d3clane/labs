@@ -14,4 +14,7 @@ void TestLoadFactor(const char* inFileName, const char* outFileName,
                     const float loadFactorStep,
                     HashFuncType Hash);
 
+void TestTablesOperations(const char* inFileDir, const char* outFileName,
+                           const size_t from, const size_t to, const size_t step,
+                           HashFuncType Hash);
 #endif

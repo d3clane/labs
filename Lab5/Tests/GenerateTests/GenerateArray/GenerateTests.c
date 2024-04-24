@@ -40,3 +40,68 @@ void GenerateTestsStrs(size_t arraySize, size_t lenMin, size_t lenMax)
         printf("\n");
     }
 }
+
+void GenerateTestsOps1(size_t arraySize)
+{
+    srand(42);
+
+    for (size_t i = 0; i < arraySize; ++i)
+    {
+        char op = rand() % 3;
+
+        switch (op)
+        {
+            case 0:
+                op = '+';
+                break;
+            
+            case 1:
+                op = '-';
+                break;
+
+            case 2:
+                op = '?';
+                break;
+
+            default:
+                break;
+        }
+
+        int val = rand();
+
+        printf("%c %d\n", op, val);
+    }
+}
+
+void GenerateTestsOps2(size_t arraySize)
+{
+    srand(42);
+
+    for (size_t i = 0; i < arraySize; ++i)
+    {
+        char op = rand() % 4;
+
+        switch (op)
+        {
+            case 0:
+            case 1:
+                op = '+';
+                break;
+            
+            case 2:
+                op = '-';
+                break;
+
+            case 3:
+                op = '?';
+                break;
+
+            default:
+                break;
+        }
+
+        int val = rand();
+
+        printf("%c %d\n", op, val);
+    }
+}

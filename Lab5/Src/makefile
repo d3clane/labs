@@ -1,6 +1,7 @@
 CXX = g++-13
-CXXFLAGS = -D NDEBUG -D INT_TYPE=1 -D FLOAT_TYPE=2 -D STR_TYPE=3 -D TYPE=INT_TYPE \
-		   -D LIST_TABLE -D LINEAR=1 -D QUADRATIC=2 -D HASH=3 -D PROBE_FUNC=HASH -std=c++17 -O3 -g
+CXXFLAGS = -D _DEBUG -D INT_TYPE=1 -D FLOAT_TYPE=2 -D STR_TYPE=3 -D TYPE=INT_TYPE \
+		   -D LIST_TABLE -D LINEAR=1 -D QUADRATIC=2 -D HASH=3 -D PROBE_FUNC=HASH -std=c++17 -O3 -g \
+		   -fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
 HOME = $(shell pwd)
 CXXFLAGS += -I $(HOME)

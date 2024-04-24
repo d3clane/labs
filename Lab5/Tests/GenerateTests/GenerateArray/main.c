@@ -5,6 +5,7 @@
 
 int main(const int argc, const char* argv[])
 {
+    /*
     assert(argc >= 4);
 
     char* argvValEndPtr = NULL;
@@ -35,4 +36,9 @@ int main(const int argc, const char* argv[])
 
         GenerateTestsStrs(arraySize, lenMin, lenMax);
     }
+    */
+
+   assert(argc >= 2);
+   char* argvValEndPtr = NULL;
+   GenerateTestsOps2(strtoul(argv[1], &argvValEndPtr, 10));
 }

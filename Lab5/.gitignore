@@ -2,6 +2,8 @@ build/
 Tests/FloatHash
 Tests/IntHash
 Tests/StrHash
+Ops1/
+Ops2/
 TestsResults/
 tester
 *.DS_Store

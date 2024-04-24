@@ -92,6 +92,70 @@ void TestLoadFactor(const char* inFileName, const char* outFileName,
     }
 }
 
+void TestTablesOperations(const char* inFileDir, const char* outFileName,
+                           const size_t from, const size_t to, const size_t step,
+                           HashFuncType Hash)
+{
+#define MAX_FILE_NAME_LEN 256
+    char inFileName[MAX_FILE_NAME_LEN] = "";
+
+#if defined(LIST_TABLE)
+    static const float optimalLoadFactor = 2.75;
+#else
+    static const float optimalLoadFactor = 0.8;
+#endif
+
+    FILE* outStream = fopen(outFileName, "w");
+    assert(outStream);
+
+    for (size_t numberOfOperations = from; numberOfOperations < to; numberOfOperations += step)
+    {
+        snprintf(inFileName, MAX_FILE_NAME_LEN, "%s/%zu.in", inFileDir, numberOfOperations);
+
+        FILE* inStream = fopen(inFileName, "r");
+        assert(inStream);
+
+        clock_t time = 0;
+
+        HashTableType* table = HashTableCtor(2, Hash, optimalLoadFactor);
+        for (size_t op = 0; op < numberOfOperations; ++op)
+        {
+            char opType = 0;
+            int val     = 0;
+
+            fscanf(inStream, "%c %d\n", &opType, &val);
+
+            clock_t deltaTime = clock();
+            switch (opType)
+            {
+                case '+':
+                    HashTableInsert(table, val);
+                    break;
+                
+                case '-':
+                    HashTableErase(table, val);
+                    break;
+
+                case '?':
+                    HashTableGetValue(table, val);
+                    break;
+
+                default:
+                    break;
+            }
+
+            time += clock() - deltaTime;
+        }
+
+        fprintf(outStream, "%zu %lf", numberOfOperations, (double)time / CLOCKS_PER_SEC);
+
+        HashTableDtor(table);
+        fclose(inStream);
+    }
+
+    #undef MAX_FILE_NAME_LEN
+}
+
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {
     assert(inStream);

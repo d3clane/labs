@@ -76,7 +76,36 @@ int main()
     const char* outFileName = OUT_DIR "Hash.out";
 #endif
 
-    TestLoadFactor("Tests/IntHash/1000000_1.in", outFileName,
-                   1000000, minLoadFactor, maxLoadFactor, loadFactorStep, KnuthHashInt);
+#undef OUT_DIR
 
+    //TestLoadFactor("Tests/IntHash/1000000_1.in", outFileName,
+    //               1000000, minLoadFactor, maxLoadFactor, loadFactorStep, KnuthHashInt);
+
+#define OUT_DIR "TestsResults/Ops/Ops1"
+#if defined(LIST_TABLE)
+    outFileName = OUT_DIR "List.out";
+#elif defined(OPEN_TABLE) && PROBE_FUNC == LINEAR
+    outFileName = OUT_DIR "Linear.out";
+#elif defined(OPEN_TABLE) && PROBE_FUNC == QUADRATIC
+    outFileName = OUT_DIR "Quadratic.out";
+#else
+    outFileName = OUT_DIR "Hash.out";
+#endif
+
+    TestTablesOperations("Tests/Ops1", outFileName, 
+                         10000, 1000000, 10000, KnuthHashInt);
+
+#define OUT_DIR "TestsResults/Ops/Ops2"
+#if defined(LIST_TABLE)
+    outFileName = OUT_DIR "List.out";
+#elif defined(OPEN_TABLE) && PROBE_FUNC == LINEAR
+    outFileName = OUT_DIR "Linear.out";
+#elif defined(OPEN_TABLE) && PROBE_FUNC == QUADRATIC
+    outFileName = OUT_DIR "Quadratic.out";
+#else
+    outFileName = OUT_DIR "Hash.out";
+#endif
+
+    TestTablesOperations("Tests/Ops2", outFileName,
+                        10000, 1000000, 10000, KnuthHashInt);
 }
