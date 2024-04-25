@@ -204,7 +204,7 @@ static inline size_t HashProbeFirstStep     (int key, HashFuncType HashFunc, siz
     const size_t b   = 7777;
     const size_t mod = 1000003;
 
-    size_t secondHash = KnuthHash((unsigned int)key, a, b, mod);
+    size_t secondHash = UniversalHash((unsigned int)key, a, b, mod);
 
     if (secondHash % 2 == 0)
         ++secondHash;

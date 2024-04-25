@@ -21,7 +21,7 @@ int main()
                                     1000000, BitHashInt));
     printf("Knuth - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
                                     "TestsResults/IntHash/Knuth.out",
-                                    1000000, KnuthHashInt));
+                                    1000000, UniversalHashFixed));
 #elif TYPE == FLOAT_TYPE
     printf("Float to int bit - %lf\n", TestHash("Tests/FloatHash/1000000_1.in",
                                    "TestsResults/FloatHash/FloatToIntBit.out",
@@ -79,7 +79,7 @@ int main()
 #undef OUT_DIR
 
     //TestLoadFactor("Tests/IntHash/1000000_1.in", outFileName,
-    //               1000000, minLoadFactor, maxLoadFactor, loadFactorStep, KnuthHashInt);
+    //               1000000, minLoadFactor, maxLoadFactor, loadFactorStep, UniversalHashFixed);
 
 
 /*
@@ -95,7 +95,7 @@ int main()
 #endif
 
     TestTablesOperations("Tests/Ops1", outFileName, 
-                         10000, 1000000, 10000, KnuthHashInt);
+                         10000, 1000000, 10000, UniversalHashFixed);
 
 #define OUT_DIR "TestsResults/Ops/Ops2"
 #if defined(LIST_TABLE)
@@ -109,7 +109,7 @@ int main()
 #endif
 
     TestTablesOperations("Tests/Ops2", outFileName,
-                        10000, 1000000, 10000, KnuthHashInt);
+                        10000, 1000000, 10000, UniversalHashFixed);
 
 */
 

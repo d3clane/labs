@@ -28,16 +28,16 @@ size_t BitHashInt(unsigned int value)
     return res;
 }
 
-size_t KnuthHashInt(unsigned int value)
+size_t UniversalHashFixed(unsigned int value)
 {
     static const size_t a = 78;
     static const size_t b = 1337;
     static const size_t p = 1e9 + 7;
 
-    return KnuthHash(value, a, b, p);
+    return UniversalHash(value, a, b, p);
 }
 
-size_t KnuthHash(unsigned int value, const size_t a, const size_t b, const size_t mod)
+size_t UniversalHash(unsigned int value, const size_t a, const size_t b, const size_t mod)
 {
     return (size_t)(a * value + b) % mod;
 }
