@@ -15,13 +15,22 @@ typedef char* HashValType;
 #define HASH_VAL_FORMAT_STR "%s"
 #endif
 
+#ifdef KNUTH_HASH
+typedef size_t (*HashFuncType)(HashValType value, size_t arraySize);
+#else
 typedef size_t (*HashFuncType)(HashValType value);
+#endif
 
 size_t ModHashInt   (unsigned int value);
 size_t BitHashInt   (unsigned int value);
-size_t UniversalHashFixed (unsigned int value);
 
+#ifdef KNUTH_HASH
+size_t KnuthHashInt (unsigned int value, size_t arrSize);
+#endif
+
+size_t UniversalHashFixed (unsigned int value);
 size_t UniversalHash(unsigned int value, const size_t a, const size_t b, const size_t mod);
+
 
 size_t FloatToIntHash  (float value);
 size_t BitHashFloat    (float value);

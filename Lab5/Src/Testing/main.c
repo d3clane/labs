@@ -4,6 +4,7 @@
 
 #include "Testing.h"
 #include "Hash/Hash.h"
+
 #include "HashTable/HashTableOpen.h"
 #include "HashTable/HashTableWithList.h"
 
@@ -11,7 +12,16 @@ int main()
 {
     //-----------------------Hashes testing-------------------------------------------
 
-/*
+
+#ifdef KNUTH_HASH
+
+    printf("Knuth - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
+                                    "TestsResults/IntHash/Knuth.out",
+                                    1000000, KnuthHashInt));
+    return 0;
+
+#else 
+
 #if TYPE == INT_TYPE
     printf("Mod - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
                                    "TestsResults/IntHash/Mod.out",
@@ -19,9 +29,6 @@ int main()
     printf("Bit - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
                                     "TestsResults/IntHash/Bit.out",
                                     1000000, BitHashInt));
-    printf("Knuth - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
-                                    "TestsResults/IntHash/Knuth.out",
-                                    1000000, UniversalHashFixed));
 #elif TYPE == FLOAT_TYPE
     printf("Float to int bit - %lf\n", TestHash("Tests/FloatHash/1000000_1.in",
                                    "TestsResults/FloatHash/FloatToIntBit.out",
@@ -55,7 +62,8 @@ int main()
                                     "TestsResults/StrHash/CRC32.out",
                                     1000000, CRC32Hash));
 #endif
-*/
+
+#endif
     //------------------------Hash table-----------------------------
 
 #define OUT_DIR "TestsResults/LoadFactor/LoadFactor"

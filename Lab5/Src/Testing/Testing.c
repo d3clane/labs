@@ -11,10 +11,25 @@
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize);
 
-static inline size_t HashMod(size_t (*Hash)(HashValType val), size_t MOD, HashValType val)
+#ifdef KNUTH_HASH
+
+static inline size_t HashMod(HashFuncType Hash, size_t MOD, HashValType val)
+{
+    size_t hash = Hash(val, MOD);
+
+    assert(hash < MOD);
+
+    return hash;
+}
+
+#else
+
+static inline size_t HashMod(HashFuncType Hash, size_t MOD, HashValType val)
 {
     return Hash(val) % MOD;
 }
+
+#endif
 
 double TestHash(const char* inFileName, const char* outFileName,
                 size_t numberOfValues, HashFuncType Hash)
@@ -58,6 +73,7 @@ double TestHash(const char* inFileName, const char* outFileName,
     return (double)time / CLOCKS_PER_SEC;
 }
 
+/*
 void TestLoadFactor(const char* inFileName, const char* outFileName,
                     size_t numberOfValues,
                     const float minLoadFactor, const float maxLoadFactor, 
@@ -155,6 +171,8 @@ void TestTablesOperations(const char* inFileDir, const char* outFileName,
 
     #undef MAX_FILE_NAME_LEN
 }
+
+*/
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {

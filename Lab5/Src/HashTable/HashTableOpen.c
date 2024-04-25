@@ -1,4 +1,4 @@
-#ifdef OPEN_TABLE
+#if OPEN_TABLE 
 
 #include <assert.h>
 #include <stdio.h>

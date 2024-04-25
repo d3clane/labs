@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "Hash.h"
 
@@ -27,6 +28,15 @@ size_t BitHashInt(unsigned int value)
 
     return res;
 }
+
+#ifdef KNUTH_HASH
+size_t KnuthHashInt (unsigned int value, size_t arrSize)
+{
+    static const double A = 0.6180339887;
+
+    return (size_t)floor(arrSize * ((double)value * A - (unsigned int)((double)value * A)));
+}
+#endif
 
 size_t UniversalHashFixed(unsigned int value)
 {
