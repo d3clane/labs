@@ -32,7 +32,6 @@ int main()
     printf("Float to int bit - %lf\n", TestHash("Tests/FloatHash/1000000_1.in",
                                    "TestsResults/FloatHash/FloatToIntBit.out",
                                    1000000, FloatToIntHash));
-/*
     printf("Float bit - %lf\n", TestHash("Tests/FloatHash/1000000_1.in",
                                     "TestsResults/FloatHash/FloatBit.out",
                                     1000000, BitHashFloat));
@@ -45,7 +44,6 @@ int main()
     printf("Exponent x Mantissa - %lf\n", TestHash("Tests/FloatHash/1000000_1.in",
                                     "TestsResults/FloatHash/ExpXMantissa.out",
                                     1000000, ExpXMantissaHash));
-*/
 #else
     printf("Len - %lf\n", TestHash("Tests/StrHash/1000000_1.in",
                                     "TestsResults/StrHash/Len.out",
