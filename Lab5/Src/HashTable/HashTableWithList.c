@@ -132,9 +132,9 @@ void HashTableErase(HashTableType *table, const int key)
     assert(table);
 
     size_t bucketPos = HashTableGetBucketPos(table, key);
-    ListErase(table->buckets + bucketPos, key);
-
-    table->numberOfElementsInserted--;
+    
+    if (ListErase(table->buckets + bucketPos, key))
+        table->numberOfElementsInserted--;
 }
 
 bool HashTableGetValue(HashTableType *table, const int key)

@@ -101,9 +101,6 @@ void HashTableInsert(HashTableType* table, const int key)
 {
     assert(table);
 
-    if (HashTableNeedIncreasing(table))
-        HashTableIncreaseSize(table);
-
     HashTableElem* elem = HashTableFindElemPlace(table, key);
     assert(elem);
     assert(elem->isDel == false);
@@ -115,6 +112,8 @@ void HashTableInsert(HashTableType* table, const int key)
 
     table->dataSize++;
 
+    if (HashTableNeedIncreasing(table))
+        HashTableIncreaseSize(table);
     return;
 }
 

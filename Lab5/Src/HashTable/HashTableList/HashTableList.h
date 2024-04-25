@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 typedef struct ListElem
 {
@@ -21,7 +22,7 @@ List  ListCtor();
 List* ListDtor(List* list);
 
 ListElem* ListInsert(List* list, ListElem* anchorElement, int key);
-void      ListErase(List* list, int key);
+bool      ListErase(List* list, int key);
 ListElem* ListFindKey(List* list, int key);
 
 int ListPopHead     (List* list);

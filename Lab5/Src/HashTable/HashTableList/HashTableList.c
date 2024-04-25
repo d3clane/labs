@@ -73,7 +73,7 @@ int ListPopHead(List* list)
     return 0;
 }
 
-void ListErase(List* list, int key)
+bool ListErase(List* list, int key)
 {
     assert(list);
     assert(list->begin);
@@ -87,13 +87,18 @@ void ListErase(List* list, int key)
         assert(prevElem);
         if (elem->key == key)
         {
+            assert(prevElem->nextElem == elem);
             prevElem->nextElem = elem->nextElem;
             ListElemDtor(elem);
-            break;
-        }
 
+            return true;
+        }
+        
+        prevElem = elem;
         elem = elem->nextElem;
     }
+    
+    return false;
 }
 
 int ListGetkey(ListElem* elem)

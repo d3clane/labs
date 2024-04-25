@@ -81,6 +81,8 @@ int main()
     //TestLoadFactor("Tests/IntHash/1000000_1.in", outFileName,
     //               1000000, minLoadFactor, maxLoadFactor, loadFactorStep, KnuthHashInt);
 
+
+/*
 #define OUT_DIR "TestsResults/Ops/Ops1"
 #if defined(LIST_TABLE)
     outFileName = OUT_DIR "List.out";
@@ -108,4 +110,7 @@ int main()
 
     TestTablesOperations("Tests/Ops2", outFileName,
                         10000, 1000000, 10000, KnuthHashInt);
+
+*/
+
 }

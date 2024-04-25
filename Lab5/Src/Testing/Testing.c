@@ -108,7 +108,7 @@ void TestTablesOperations(const char* inFileDir, const char* outFileName,
     FILE* outStream = fopen(outFileName, "w");
     assert(outStream);
 
-    for (size_t numberOfOperations = from; numberOfOperations < to; numberOfOperations += step)
+    for (size_t numberOfOperations = from; numberOfOperations <= to; numberOfOperations += step)
     {
         snprintf(inFileName, MAX_FILE_NAME_LEN, "%s/%zu.in", inFileDir, numberOfOperations);
 
@@ -117,7 +117,7 @@ void TestTablesOperations(const char* inFileDir, const char* outFileName,
 
         clock_t time = 0;
 
-        HashTableType* table = HashTableCtor(2, Hash, optimalLoadFactor);
+        HashTableType* table = HashTableCtor(1, Hash, optimalLoadFactor);
         for (size_t op = 0; op < numberOfOperations; ++op)
         {
             char opType = 0;
@@ -147,7 +147,7 @@ void TestTablesOperations(const char* inFileDir, const char* outFileName,
             time += clock() - deltaTime;
         }
 
-        fprintf(outStream, "%zu %lf", numberOfOperations, (double)time / CLOCKS_PER_SEC);
+        fprintf(outStream, "%zu %lf\n", numberOfOperations, (double)time / CLOCKS_PER_SEC);
 
         HashTableDtor(table);
         fclose(inStream);
