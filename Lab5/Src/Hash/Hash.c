@@ -5,12 +5,12 @@
 
 #include "Hash.h"
 
-size_t ModHashInt(unsigned int value)
+size_t ModHashUInt(unsigned int value)
 {
     return value % 1000;
 }
 
-size_t BitHashInt(unsigned int value)
+size_t BitHashUInt(unsigned int value)
 {
     size_t res = 0;
 
@@ -30,7 +30,7 @@ size_t BitHashInt(unsigned int value)
 }
 
 #ifdef KNUTH_HASH
-size_t KnuthHashInt (unsigned int value, size_t arrSize)
+size_t KnuthHashUInt (unsigned int value, size_t arrSize)
 {
     static const double A = 0.6180339887;
 
@@ -54,7 +54,7 @@ size_t UniversalHash(unsigned int value, const size_t a, const size_t b, const s
 
 size_t FloatToIntHash  (float value)
 {
-    return BitHashInt((int)value);
+    return BitHashUInt((unsigned int)value);
 }
 
 size_t BitHashFloat    (float value)
@@ -67,7 +67,7 @@ size_t BitHashFloat    (float value)
 
     floatBits.valFloat = value;
 
-    return BitHashInt(floatBits.valInt);
+    return BitHashUInt(floatBits.valInt);
 }
 
 size_t MantissaHash    (float value)

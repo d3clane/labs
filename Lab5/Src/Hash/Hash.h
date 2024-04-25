@@ -21,11 +21,11 @@ typedef size_t (*HashFuncType)(HashValType value, size_t arraySize);
 typedef size_t (*HashFuncType)(HashValType value);
 #endif
 
-size_t ModHashInt   (unsigned int value);
-size_t BitHashInt   (unsigned int value);
+size_t ModHashUInt   (unsigned int value);
+size_t BitHashUInt   (unsigned int value);
 
 #ifdef KNUTH_HASH
-size_t KnuthHashInt (unsigned int value, size_t arrSize);
+size_t KnuthHashUInt (unsigned int value, size_t arrSize);
 #endif
 
 size_t UniversalHashFixed (unsigned int value);

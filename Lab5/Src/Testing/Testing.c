@@ -74,6 +74,8 @@ double TestHash(const char* inFileName, const char* outFileName,
     return (double)time / CLOCKS_PER_SEC;
 }
 
+#if TYPE == INT_TYPE
+
 #ifndef IDEAL_TABLE
 
 void TestLoadFactor(const char* inFileName, const char* outFileName,
@@ -231,6 +233,8 @@ double TestTablesSearches(const char* insertValuesFileName, const char* searchVa
 
     return (double) time / CLOCKS_PER_SEC;
 }
+
+#endif
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {
