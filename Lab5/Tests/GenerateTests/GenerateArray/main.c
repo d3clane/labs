@@ -40,5 +40,5 @@ int main(const int argc, const char* argv[])
 
    assert(argc >= 2);
    char* argvValEndPtr = NULL;
-   GenerateTestsOps2(strtoul(argv[1], &argvValEndPtr, 10));
+   GenerateUniqueInts(strtoul(argv[1], &argvValEndPtr, 10));
 }

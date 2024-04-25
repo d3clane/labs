@@ -17,4 +17,8 @@ void TestLoadFactor(const char* inFileName, const char* outFileName,
 void TestTablesOperations(const char* inFileDir, const char* outFileName,
                            const size_t from, const size_t to, const size_t step,
                            HashFuncType Hash);
+
+double TestTablesSearches(const char* insertValuesFileName, const char* searchValuesFileName,
+                          const size_t numberOfInsertedVals, const size_t numberOfSearchingVals);
+                        
 #endif

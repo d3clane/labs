@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <time.h>
 
 void GenerateTestsInt(size_t arraySize, int maxElement)
@@ -104,4 +105,36 @@ void GenerateTestsOps2(size_t arraySize)
 
         printf("%c %d\n", op, val);
     }
+}
+
+void GenerateUniqueInts(size_t arraySize)
+{
+    int* results = (int*)calloc(arraySize, sizeof(*results));
+
+    for (size_t i = 0; i < arraySize; ++i)
+    {
+        while (true)
+        {
+            int newVal = rand();
+
+            bool continueSearch = false;
+            for (size_t j = 0; j < i; ++j)
+            {
+                if (newVal == results[i])
+                {
+                    continueSearch = true;
+                    break;
+                }
+            }
+
+            if (!continueSearch)
+            {
+                results[i] = newVal;
+                break;
+            }
+        }
+    }
+
+    for (size_t i = 0 ; i < arraySize; ++i)
+        printf("%d ", results[i]);
 }

@@ -4,6 +4,7 @@ Tests/IntHash
 Tests/StrHash
 Ops1/
 Ops2/
+SearchesTest/
 TestsResults/
 tester
 *.DS_Store

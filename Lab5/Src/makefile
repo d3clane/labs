@@ -1,6 +1,6 @@
 CXX = g++-13
 CXXFLAGS = -D _DEBUG -D INT_TYPE=1 -D FLOAT_TYPE=2 -D STR_TYPE=3 -D TYPE=INT_TYPE \
-		   -D OPEN_TABLE -D LINEAR=1 -D QUADRATIC=2 -D HASH=3 -D PROBE_FUNC=HASH -std=c++17 -O3 -g  \
+		   -D LIST_TABLE -D LINEAR=1 -D QUADRATIC=2 -D HASH=3 -D PROBE_FUNC=QUADRATIC -std=c++17 -O3 -g  \
 		   #-fsanitize=address,alignment,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
 
 HOME = $(shell pwd)
@@ -13,7 +13,7 @@ DOXYFILE = Others/Doxyfile
 
 TESTING_DIR     = Testing
 TESTING_HEADERS = $(TESTING_DIR)/Testing.h
-TESTING_CPP		= Testing.c main.c 
+TESTING_CPP		= Testing.c main.c
 TESTING_OBJ     = $(TESTING_CPP:%.c=$(OBJECTDIR)/%.o)
 
 HASHES_DIR 	    = Hash
@@ -21,7 +21,7 @@ HASHES_CPP	    = Hash.c
 HASHES_OBJ		= $(HASHES_CPP:%.c=$(OBJECTDIR)/%.o)
 
 HASH_TABLE_DIR  = HashTable
-HASH_TABLE_CPP  = HashTableOpen.c HashTableWithList.c
+HASH_TABLE_CPP  = HashTableOpen.c HashTableWithList.c HashTableIdeal.c
 HASH_TABLE_OBJ  = $(HASH_TABLE_CPP:%.c=$(OBJECTDIR)/%.o)
 
 HASH_TABLE_LIST_DIR = HashTable/HashTableList

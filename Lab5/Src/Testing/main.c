@@ -12,7 +12,7 @@ int main()
 {
     //-----------------------Hashes testing-------------------------------------------
 
-
+/*
 #ifdef KNUTH_HASH
 
     printf("Knuth - %lf\n", TestHash("Tests/IntHash/1000000_1.in",
@@ -65,7 +65,7 @@ int main()
 
 #endif
     //------------------------Hash table-----------------------------
-
+*/
 #define OUT_DIR "TestsResults/LoadFactor/LoadFactor"
 
     float maxLoadFactor  = 0.9;
@@ -123,5 +123,8 @@ int main()
 
     //-------------------IDEAL HASHING-----------------------
 
-    
+    printf("Search time - %lf\n", 
+           TestTablesSearches("Tests/SearchesTest/Inserts/100000.in", 
+                              "Tests/SearchesTest/Search/10000000.in",
+                              100000, 10000000));
 }
