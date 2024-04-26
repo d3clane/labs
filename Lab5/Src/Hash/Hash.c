@@ -5,9 +5,11 @@
 
 #include "Hash.h"
 
+static const int MOD = 1000;
+
 size_t ModHashUInt(unsigned int value)
 {
-    return value % 1000;
+    return value % MOD;
 }
 
 size_t BitHashUInt(unsigned int value)
@@ -26,7 +28,7 @@ size_t BitHashUInt(unsigned int value)
         val >>= 1;
     }
 
-    return res;
+    return res % MOD;
 }
 
 #ifdef KNUTH_HASH
@@ -34,7 +36,7 @@ size_t KnuthHashUInt (unsigned int value, size_t arrSize)
 {
     static const double A = 0.6180339887;
 
-    return (size_t)floor(arrSize * ((double)value * A - (unsigned int)((double)value * A)));
+    return (size_t)floor(arrSize * ((double)value * A - (unsigned int)((double)value * A))) % MOD;
 }
 #endif
 
@@ -44,17 +46,17 @@ size_t UniversalHashFixed(unsigned int value)
     static const size_t b = 1337;
     static const size_t p = 1e9 + 7;
 
-    return UniversalHash(value, a, b, p);
+    return UniversalHash(value, a, b, p) % MOD;
 }
 
 size_t UniversalHash(unsigned int value, const size_t a, const size_t b, const size_t mod)
 {
-    return (size_t)(a * value + b) % mod;
+    return ((size_t)(a * value + b) % mod) % MOD;
 }
 
 size_t FloatToIntHash  (float value)
 {
-    return BitHashUInt((unsigned int)value);
+    return BitHashUInt((unsigned int)value) % MOD;
 }
 
 size_t BitHashFloat    (float value)
@@ -67,7 +69,7 @@ size_t BitHashFloat    (float value)
 
     floatBits.valFloat = value;
 
-    return BitHashUInt(floatBits.valInt);
+    return BitHashUInt(floatBits.valInt) % MOD;
 }
 
 size_t MantissaHash    (float value)
@@ -80,7 +82,7 @@ size_t MantissaHash    (float value)
 
     floatBits.valFloat = value;
 
-    return floatBits.valInt & 0x7FFFFF;
+    return (floatBits.valInt & 0x7FFFFF) % MOD;
 }
 
 size_t ExponentHash    (float value)
@@ -93,19 +95,19 @@ size_t ExponentHash    (float value)
 
     floatBits.valFloat = value;
 
-    return (floatBits.valInt >> 23) & 0xFF;
+    return ((floatBits.valInt >> 23) & 0xFF) % MOD;
 }
 
 size_t ExpXMantissaHash(float value)
 {
-    return ExponentHash(value) * MantissaHash(value);
+    return (ExponentHash(value) * MantissaHash(value)) % MOD;
 }
 
 size_t StringLenHash        (char* str)
 {
     assert(str);
 
-    return strlen(str);
+    return strlen(str) % MOD;
 }
 
 size_t SumCharsHash         (char* str)
@@ -121,7 +123,7 @@ size_t SumCharsHash         (char* str)
         strPtr++;
     }
 
-    return sum;
+    return sum % MOD;
 }
 
 size_t StringPolynomialHash (char* str)
@@ -140,7 +142,7 @@ size_t StringPolynomialHash (char* str)
         strPtr++;
     }
 
-    return sum;
+    return sum % MOD;
 }
 
 static const unsigned int crc32_table[] =
@@ -224,5 +226,5 @@ size_t CRC32Hash (char* str)
       strPtr++;
     }
 
-    return crc;
+    return crc % MOD;
 }

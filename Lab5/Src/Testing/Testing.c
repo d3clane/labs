@@ -39,7 +39,7 @@ double TestHash(const char* inFileName, const char* outFileName,
     size_t arrSize    = numberOfValues;
     assert(arr); 
 
-    static const size_t distributionArraySize = 145007;
+    static const size_t distributionArraySize = 1000;
     size_t* distribution = (size_t*)calloc(distributionArraySize, sizeof(*distribution));
     assert(distribution);
 
@@ -74,6 +74,7 @@ double TestHash(const char* inFileName, const char* outFileName,
     return (double)time / CLOCKS_PER_SEC;
 }
 
+/*
 #if TYPE == INT_TYPE
 
 #ifndef IDEAL_TABLE
@@ -235,6 +236,8 @@ double TestTablesSearches(const char* insertValuesFileName, const char* searchVa
 }
 
 #endif
+
+*/
 
 static inline void ReadFromFile(FILE* inStream, HashValType* arr, size_t arrSize)
 {
