@@ -1,9 +1,9 @@
 #include <assert.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-#include <stdint.h>
 #include <time.h>
 
 typedef struct AVLNode
@@ -298,7 +298,7 @@ void ProcessAVLQueries()
     size_t n = 0;
     int scanfRes = scanf("%zu", &n);
     assert(scanfRes == 1);
-    
+
     EatLine();
 
     AVL tree = AVLCtor();
