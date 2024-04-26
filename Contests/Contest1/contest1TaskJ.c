@@ -1,10 +1,10 @@
 #include <assert.h>
+#include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <stdbool.h>
-#include <math.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct Array
 {
@@ -34,6 +34,14 @@ typedef struct Heap
     Array heapData;
 } Heap;
 
+typedef enum MinMax
+{
+    MIN = 0,
+    MAX = 1,
+} MinMax;
+
+typedef bool (*CompareFunc)(int val1, int val2);
+
 Heap  HeapCtor      ();
 Heap* HeapDtor      (Heap* heap);
 void  HeapInsert    (Heap* heap, int n, int* error);
@@ -55,8 +63,10 @@ static void HeapSiftDownMin(Heap* heap, size_t valPos, int* error);
 static int HeapGetFatherPos     (size_t valPos);
 static int HeapGetGrandpaPos    (size_t valPos);
 
+static int HeapGetMinMaxSonPos  (Heap* heap, size_t valPos, CompareFunc Compare);
 static int HeapGetMinSonPos     (Heap* heap, size_t valPos);
 static int HeapGetMaxSonPos     (Heap* heap, size_t valPos);
+static int HeapGetMinMaxGrandsonPos(Heap* heap, size_t valPos, CompareFunc Compare);
 static int HeapGetMinGrandsonPos(Heap* heap, size_t valPos);
 static int HeapGetMaxGrandsonPos(Heap* heap, size_t valPos);
 
@@ -64,14 +74,19 @@ static inline bool HeapValueLiesOnMinLevel(size_t valPos);
 
 static void Swap(int* val1, int* val2);
 
-void ProcessQueries();
+static inline bool CompareMax       (int val1, int val2) { return val1 >= val2; }
+static inline bool CompareMin       (int val1, int val2) { return val1 <= val2; }
+static inline bool CompareMaxStrict (int val1, int val2) { return val1 >  val2; }
+static inline bool CompareMinStrict (int val1, int val2) { return val1 <  val2; }
+
+void ProcessMinMaxHeapQueries();
 
 int main()
 {
-    ProcessQueries();
+    ProcessMinMaxHeapQueries();
 }
 
-void ProcessQueries()
+void ProcessMinMaxHeapQueries()
 {
     Heap heap = HeapCtor();
 
@@ -80,11 +95,15 @@ void ProcessQueries()
     assert(scanfResult == 1);
 
     int error = 0;
-    char command[20] = "";
+
+#define MAX_COMMAND_LEN 20
+#define MAX_COMMAND_LEN_FORMAT_STR "19"
+
+    char command[MAX_COMMAND_LEN] = "";
 
     while (m--)
     {
-        scanfResult = scanf("%s", command);
+        scanfResult = scanf("%" MAX_COMMAND_LEN_FORMAT_STR "s", command);
         assert(scanfResult == 1);
 
         int valToPrint = 0;
@@ -136,6 +155,9 @@ void ProcessQueries()
             printf("ok\n");
         }
     }
+
+#undef MAX_COMMAND_LEN
+#undef MAX_COMMAND_LEN_FORMAT_STR
 
     HeapDtor(&heap);
 }
@@ -458,34 +480,35 @@ static void HeapSiftUp  (Heap* heap, size_t valPos, int* error)
     }
 }
 
-static void HeapSiftUpMax  (Heap* heap, size_t valPos, int* error)
+static void HeapSiftUpMinMax(Heap* heap, size_t valPos, int* error, CompareFunc CompareStrict)
 {
     assert(heap);
     assert(error);
 
     size_t currValPos = valPos;
     int grandpaPos = HeapGetGrandpaPos(valPos);
-    while (grandpaPos != -1 && heap->heapData.data[grandpaPos] < heap->heapData.data[currValPos])
+    while (grandpaPos != -1 && CompareStrict(heap->heapData.data[currValPos], heap->heapData.data[grandpaPos]))
     {
         Swap(heap->heapData.data + grandpaPos, heap->heapData.data + currValPos);
-        currValPos = (size_t) grandpaPos;
+        currValPos = grandpaPos;
         grandpaPos = HeapGetGrandpaPos(currValPos);
-    }
+    }  
+}
+
+static void HeapSiftUpMax  (Heap* heap, size_t valPos, int* error)
+{
+    assert(heap);
+    assert(error);
+
+    HeapSiftUpMinMax(heap, valPos, error, CompareMaxStrict);
 }
 
 static void HeapSiftUpMin  (Heap* heap, size_t valPos, int* error)
 {
     assert(heap);
     assert(error);
-
-    size_t currValPos = valPos;
-    int grandpaPos = HeapGetGrandpaPos(valPos);
-    while (grandpaPos != -1 && heap->heapData.data[grandpaPos] > heap->heapData.data[currValPos])
-    {
-        Swap(heap->heapData.data + grandpaPos, heap->heapData.data + currValPos);
-        currValPos = grandpaPos;
-        grandpaPos = HeapGetGrandpaPos(currValPos);
-    }
+    
+    HeapSiftUpMinMax(heap, valPos, error, CompareMinStrict);
 }
 
 static void HeapSiftDown(Heap* heap, size_t valPos, int* error)
@@ -499,38 +522,47 @@ static void HeapSiftDown(Heap* heap, size_t valPos, int* error)
         HeapSiftDownMax(heap, valPos, error);
 }
 
+static void HeapSiftDownMinMax(Heap* heap, size_t valPos, int* error, CompareFunc CompareStrict,
+                                                                      CompareFunc Compare)
+{
+    assert(heap);
+    assert(error);
+
+    int sonPos      = HeapGetMinMaxSonPos     (heap, valPos, Compare);
+    int grandsonPos = HeapGetMinMaxGrandsonPos(heap, valPos, Compare);
+
+    if (sonPos == -1)
+        return;
+
+    if ((grandsonPos == -1 || 
+        CompareStrict(heap->heapData.data[sonPos], heap->heapData.data[grandsonPos])) &&
+        CompareStrict(heap->heapData.data[sonPos], heap->heapData.data[valPos]))
+    {
+        Swap(heap->heapData.data + sonPos, heap->heapData.data + valPos);
+        return;
+    }
+
+    if (grandsonPos == -1)
+        return;
+
+    if (CompareStrict(heap->heapData.data[grandsonPos], heap->heapData.data[valPos]))
+    {
+        Swap(heap->heapData.data + grandsonPos, heap->heapData.data + valPos);
+
+        int grandsonFatherPos = HeapGetFatherPos(grandsonPos);
+        if (CompareStrict(heap->heapData.data[grandsonFatherPos], heap->heapData.data[grandsonPos]))
+            Swap(heap->heapData.data + grandsonPos, heap->heapData.data + grandsonFatherPos);
+
+        HeapSiftDown(heap, grandsonPos, error);
+    }
+}
+
 static void HeapSiftDownMin(Heap* heap, size_t valPos, int* error)
 {
     assert(heap);
     assert(error);
 
-    int minSonPos      = HeapGetMinSonPos     (heap, valPos);
-    int minGrandsonPos = HeapGetMinGrandsonPos(heap, valPos);
-
-    if (minSonPos == -1)
-        return;
-
-    if ((minGrandsonPos == -1 ||
-         heap->heapData.data[minSonPos] < heap->heapData.data[minGrandsonPos]) &&
-        heap->heapData.data[minSonPos] < heap->heapData.data[valPos])
-    {
-        Swap(heap->heapData.data + minSonPos, heap->heapData.data + valPos);
-        return;
-    }
-
-    if (minGrandsonPos == -1)
-        return;
-
-    if (heap->heapData.data[minGrandsonPos] < heap->heapData.data[valPos])
-    {
-        Swap(heap->heapData.data + minGrandsonPos, heap->heapData.data + valPos);
-
-        int minGrandsonFatherPos = HeapGetFatherPos(minGrandsonPos);
-        if (heap->heapData.data[minGrandsonPos] > heap->heapData.data[minGrandsonFatherPos])
-            Swap(heap->heapData.data + minGrandsonPos, heap->heapData.data + minGrandsonFatherPos);
-
-        HeapSiftDown(heap, minGrandsonPos, error);
-    }
+    return HeapSiftDownMinMax(heap, valPos, error, CompareMinStrict, CompareMin);
 }
 
 static void HeapSiftDownMax(Heap* heap, size_t valPos, int* error)
@@ -538,33 +570,7 @@ static void HeapSiftDownMax(Heap* heap, size_t valPos, int* error)
     assert(heap);
     assert(error);
 
-    int maxSonPos      = HeapGetMaxSonPos     (heap, valPos);
-    int maxGrandsonPos = HeapGetMaxGrandsonPos(heap, valPos);
-
-    if (maxSonPos == -1)
-        return;
-
-    if ((maxGrandsonPos == -1 ||
-         heap->heapData.data[maxSonPos] > heap->heapData.data[maxGrandsonPos]) &&
-        heap->heapData.data[maxSonPos] > heap->heapData.data[valPos])
-    {
-        Swap(heap->heapData.data + maxSonPos, heap->heapData.data + valPos);
-        return;
-    }
-
-    if (maxGrandsonPos == -1)
-        return;
-
-    if (heap->heapData.data[maxGrandsonPos] > heap->heapData.data[valPos])
-    {
-        Swap(heap->heapData.data + maxGrandsonPos, heap->heapData.data + valPos);
-
-        int maxGrandsonFatherPos = HeapGetFatherPos(maxGrandsonPos);
-        if (heap->heapData.data[maxGrandsonPos] < heap->heapData.data[maxGrandsonFatherPos])
-            Swap(heap->heapData.data + maxGrandsonPos, heap->heapData.data + maxGrandsonFatherPos);
-
-        HeapSiftDown(heap, maxGrandsonPos, error);
-    }
+    return HeapSiftDownMinMax(heap, valPos, error, CompareMaxStrict, CompareMax);
 }
 
 static int HeapGetFatherPos     (size_t valPos)
@@ -588,72 +594,68 @@ static int HeapGetGrandpaPos    (size_t valPos)
     return HeapGetFatherPos(fatherPos);
 }
 
-static int HeapGetMinSonPos     (Heap* heap, size_t valPos)
+static int HeapGetMinMaxSonPos  (Heap* heap, size_t valPos, CompareFunc Compare)
 {
     assert(heap);
 
     if (heap->heapData.size <= 2 * valPos + 1)
         return -1;
 
-    int minSonPos = 2 * (int)valPos + 1;
+    int bestSonPos = 2 * (int)valPos + 1;
+    
+    if (heap->heapData.size <= bestSonPos + 1)
+        return bestSonPos;
 
-    if (heap->heapData.size <= minSonPos + 1 ||
-        heap->heapData.data[minSonPos + 1] >= heap->heapData.data[minSonPos])
-        return minSonPos;
+    if (Compare(heap->heapData.data[bestSonPos], heap->heapData.data[bestSonPos + 1]))
+        return bestSonPos;
+    
+    return bestSonPos + 1;
+}
 
-    return minSonPos + 1;
+static int HeapGetMinSonPos     (Heap* heap, size_t valPos)
+{
+    assert(heap);
+
+    return HeapGetMinMaxSonPos(heap, valPos, CompareMin);
 }
 
 static int HeapGetMaxSonPos     (Heap* heap, size_t valPos)
 {
     assert(heap);
 
-    if (heap->heapData.size <= 2 * valPos + 1)
-        return -1;
+    return HeapGetMinMaxSonPos(heap, valPos, CompareMax);
+}
 
-    int maxSonPos = 2 * (int)valPos + 1;
+static int HeapGetMinMaxGrandsonPos(Heap* heap, size_t valPos, CompareFunc Compare)
+{
+    assert(heap);
 
-    if (heap->heapData.size <= maxSonPos + 1 ||
-        heap->heapData.data[maxSonPos + 1] <= heap->heapData.data[maxSonPos])
-        return maxSonPos;
+    size_t leftSon  = valPos * 2 + 1;
+    size_t rightSon = valPos * 2 + 2;
 
-    return maxSonPos + 1;
+    int leftGrandSon  = HeapGetMinMaxSonPos(heap, leftSon, Compare);
+    int rightGrandSon = HeapGetMinMaxSonPos(heap, rightSon, Compare);
+    
+    if (rightGrandSon == -1) return leftGrandSon;
+
+    if (Compare(heap->heapData.data[leftGrandSon], heap->heapData.data[rightGrandSon]))
+        return leftGrandSon;
+
+    return rightGrandSon;
 }
 
 static int HeapGetMinGrandsonPos(Heap* heap, size_t valPos)
 {
     assert(heap);
 
-    size_t leftSon  = valPos * 2 + 1;
-    size_t rightSon = valPos * 2 + 2;
-
-    int leftGrandSon  = HeapGetMinSonPos(heap, leftSon);
-    int rightGrandSon = HeapGetMinSonPos(heap, rightSon);
-
-    if (rightGrandSon == -1) return leftGrandSon;
-
-    if (heap->heapData.data[leftGrandSon] <= heap->heapData.data[rightGrandSon])
-        return leftGrandSon;
-
-    return rightGrandSon;
+    return HeapGetMinMaxGrandsonPos(heap, valPos, CompareMin);
 }
 
 static int HeapGetMaxGrandsonPos(Heap* heap, size_t valPos)
 {
     assert(heap);
 
-    size_t leftSon  = valPos * 2 + 1;
-    size_t rightSon = valPos * 2 + 2;
-
-    int leftGrandSon  = HeapGetMaxSonPos(heap, leftSon);
-    int rightGrandSon = HeapGetMaxSonPos(heap, rightSon);
-
-    if (rightGrandSon == -1) return leftGrandSon;
-
-    if (heap->heapData.data[leftGrandSon] >= heap->heapData.data[rightGrandSon])
-        return leftGrandSon;
-
-    return rightGrandSon;
+    return HeapGetMinMaxGrandsonPos(heap, valPos, CompareMax);
 }
 
 static inline bool HeapValueLiesOnMinLevel(size_t valPos)
