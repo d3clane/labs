@@ -52,14 +52,22 @@ void SplayOneNodeDtor(SplayNode* node)
     free(node);
 }
 
-void SplayDtor(SplayNode* node)
+void SplaySubtreeDtor(SplayNode* node)
 {
     if (node == NULL)
         return;
 
-    SplayDtor(node->left);
-    SplayDtor(node->right);
+    SplaySubtreeDtor(node->left);
+    SplaySubtreeDtor(node->right);
     SplayOneNodeDtor(node);
+}
+
+void SplayTreeDtor(SplayTree* tree)
+{
+    if (!tree)
+        return;
+    
+    SplaySubtreeDtor(tree->root);
 }
 
 SplayNode* GetParent(SplayNode* node)
@@ -218,12 +226,30 @@ static SplayNode* Merge(SplayNode* tree1, SplayNode* tree2)
     if (tree1 == NULL)
         return tree2;
     
-    Splay(GetMaxNode(tree1));
+    // fprintf(stderr, "MAX NODE GET BEGIN\n");
+    SplayNode* maxNode = GetMaxNode(tree1);
+    // fprintf(stderr, "MAX NODE GET END\n");
+    Splay(maxNode);
 
-    assert(tree1);
-    tree1->right = tree2; 
+    // fprintf(stderr, "SPLAY END\n");
 
-    return tree1;
+    assert(maxNode);
+    assert(maxNode->right != maxNode);
+    if (maxNode->right != NULL)
+    {
+        // fprintf(stderr, "MY VAL - %d, right val - %d\n", maxNode->key, maxNode->right->key);
+    }
+    
+    assert(maxNode->right == NULL);
+
+    maxNode->right  = tree2;
+
+    assert(maxNode->parent == NULL); 
+
+    if (tree2) 
+        tree2->parent = maxNode;
+
+    return maxNode;
 }
 
 static inline SplayNode* GetMaxNode(SplayNode* root)
@@ -236,12 +262,21 @@ static inline SplayNode* GetMaxNode(SplayNode* root)
     while (node->right)
         node = node->right;
 
+    
     return node;
 }
 
-void Insert(SplayTree* tree, const int key)
+void SplayInsert(SplayTree* tree, const int key)
 {
     SplayNodesPair pair = Split(tree->root, key);
+    
+    if (pair.node1 && pair.node1->key == key)
+    {
+        // fprintf(stderr, "MERGE START\n");
+        tree->root = Merge(pair.node1, pair.node2);
+        // fprintf(stderr, "MERGE END\n");
+        return;
+    }
 
     SplayNode* newNode = SplayNodeCtor(key);
 
@@ -254,21 +289,29 @@ void Insert(SplayTree* tree, const int key)
     tree->root = newNode;
 }
 
-void Delete(SplayTree* tree, const int key)
+void SplayDelete(SplayTree* tree, const int key)
 {
     assert(tree);
 
     SplayNode* prevNode = NULL;
     SplayNode* node     = tree->root;
+
+    // fprintf(stderr, "WHILE START\n");
     while (node && node->key != key)
     {
         prevNode = node;
 
+        assert(node != node->left);
+        assert(node != node->right);
         if (key < node->key)
             node = node->left;
         else
             node = node->right;
+
+        //// fprintf(stderr, "WHILE STEP\n");
     }
+
+    // fprintf(stderr, "WHILE END\n");
 
     if (node == NULL)
     {
@@ -276,11 +319,23 @@ void Delete(SplayTree* tree, const int key)
 
         return;
     }
+
+    // fprintf(stderr, "START SPLAY\n");
     
     Splay(node);
 
-    assert(node);
-    tree->root = Merge(node->left, node->right);
+    // fprintf(stderr, "SPLAY END\n");
 
+    assert(node);
+
+    // fprintf(stderr, "START MERGE\n");
+
+    if (node->left)  node->left->parent = NULL;
+    if (node->right) node->right->parent = NULL;
+    tree->root = Merge(node->left, node->right);
+    // fprintf(stderr, "MERGE END\n");
+
+    // fprintf(stderr, "DTOR START\n");
     SplayOneNodeDtor(node);
+    // fprintf(stderr, "DTOR END\n");
 }

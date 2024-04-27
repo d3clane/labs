@@ -3,11 +3,15 @@
 from=$1
 to=$2
 step=$3
-maxVal=$4
-testsDir=$5
+numberOfTests=$4
+maxVal=$5
+testsDir=$6
 
 generate="./generate"
 
+
 for ((size=from; size<=to; size+=step)); do
-        $generate $size $maxVal > "$testsDir/${size}.in"
+    for ((k = 1; k <= numberOfTests; k += 1)); do
+        $generate $size $maxVal > "$testsDir/${size}_${k}.in"
+    done
 done

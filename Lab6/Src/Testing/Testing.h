@@ -8,24 +8,23 @@
 #include "Splay/Splay.h"
 #include "Treap/Treap.h"
 
-#if TREE_TYPE == BST
+#if TREE_TYPE == BST_TYPE
 typedef BST TreeType;
-#elif TREE_TYPE == AVL
+#elif TREE_TYPE == AVL_TYPE
 typedef AVL TreeType;
-#elif TREE_TYPE == SPLAY
-typedef Splay TreeType;
-#elif TREE_TYPE == Treap
+#elif TREE_TYPE == SPLAY_TYPE
+typedef SplayTree TreeType;
+#elif TREE_TYPE == TREAP_TYPE
 typedef Treap TreeType;
 #else
 static_assert(false);
 #endif
 
 void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
-              const char* testsInsertsResFileName, const char* testsDeletesResFileName,
+              const char* testsInsertsResDir, const char* testsDeletesResDir,
               size_t fromIns, size_t toIns, size_t stepIns, size_t numberOfTestsIns,
-              size_t fromDel, size_t toDel, size_t stepDel, size_t numberOfTestsDel,
               TreeType (*Ctor)(), void (*Dtor)(TreeType* tree),
               void (*Insert)(TreeType* tree, int key), 
               void (*Delete)(TreeType* tree, int key));
-              
+
 #endif

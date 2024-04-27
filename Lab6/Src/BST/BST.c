@@ -74,11 +74,9 @@ void BSTInsert(BST* tree, int key)
 {
     assert(tree);
 
-    BSTNode* newNode = BSTNodeInit(key);
-
     if (tree->root == NULL)
     {
-        tree->root = newNode;
+        tree->root = BSTNodeInit(key);
         return;
     }
 
@@ -88,11 +86,17 @@ void BSTInsert(BST* tree, int key)
     while (node)
     {
         prevNode = node;
-        if (key <= node->key)
+
+        if (key == node->key)
+            return;
+
+        if (key < node->key)
             node = node->leftSon;
         else
             node = node->rightSon;
     }
+
+    BSTNode* newNode = BSTNodeInit(key);
 
     assert(prevNode);
     if (key <= prevNode->key)
@@ -166,9 +170,9 @@ static BSTNode* UntieMaxNode(BSTNode* root, BSTNode* rootPrevNode)
     }
 
     if (prevNode->leftSon == node)
-        prevNode->leftSon = NULL;
+        prevNode->leftSon = node->leftSon;
     else
-        prevNode->rightSon = NULL;
+        prevNode->rightSon = node->leftSon;
 
     return node;
 }

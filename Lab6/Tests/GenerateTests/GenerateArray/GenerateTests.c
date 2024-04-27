@@ -5,7 +5,7 @@
 
 void GenerateTests(size_t arraySize, int maxElement)
 {
-    srand(42);
+    srand(clock());
 
     for (size_t i = 0; i < arraySize; ++i)
     {

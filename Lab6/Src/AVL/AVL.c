@@ -8,21 +8,6 @@
 
 #include "AVL.h"
 
-typedef struct AVLNode
-{
-    int key;
-
-    size_t subtreeHeight;
-
-    struct AVLNode* left;
-    struct AVLNode* right;
-} AVLNode;
-
-typedef struct AVL
-{
-    AVLNode* root;
-} AVL;
-
 static inline size_t Max(size_t val1, size_t val2) { return val1 < val2 ? val2 : val1; }
 
 static inline bool AVLNeedRotateLeft(AVLNode* node);
@@ -35,6 +20,8 @@ static inline int GetDiff(AVLNode* node);
 static inline AVLNode* AVLBigRotateLeft(AVLNode* node);
 static inline AVLNode* AVLBigRotateRight(AVLNode* node);
 static inline AVLNode* AVLRotate(AVLNode* node);
+
+static inline AVLNode* UntieMaxNode(AVLNode* root, AVLNode** maxNode);
 
 AVLNode* AVLNodeCtor(int key)
 {
@@ -224,6 +211,9 @@ AVLNode* AVLInsertNode(AVLNode* node, int key)
     if (node == NULL)
         return AVLNodeCtor(key);
 
+    if (key == node->key)
+        return node;
+
     if (key < node->key)
         node->left = AVLInsertNode(node->left, key);
     else
@@ -244,42 +234,75 @@ void AVLInsert(AVL* tree, int key)
 
 AVLNode* AVLDeleteNode(AVLNode* node, int key)
 {
-    if (node == NULL);
+    if (node == NULL)
         return NULL;
     
+    AVLNode* retNode = NULL;
+
     if (key < node->key)
     {
         node->left = AVLDeleteNode(node->left, key);
-        return node;
+        retNode = node;
     }
     else if (key > node->key)
     {
         node->right = AVLDeleteNode(node->right, key);
-        return node;
+        retNode = node;
     }
-    
-    AVLNode* replacingNode = NULL;
+    else 
+    {   
+        AVLNode* replacingNode = NULL;
 
-    if (node->left == NULL)
-        replacingNode = node->right;
-    else if (node->right == NULL)
-        replacingNode = node->left;
-    else
-    {
-        replacingNode = UntieMaxNode(node->left, node);
-        
-        replacingNode->left  = node->left;
-        replacingNode->right = node->right;
+        if (node->left == NULL)
+            replacingNode = node->right;
+        else if (node->right == NULL)
+            replacingNode = node->left;
+        else
+        {
+            node->left = UntieMaxNode(node->left, &replacingNode);
+            
+            replacingNode->left  = node->left;
+            replacingNode->right = node->right;
+        }
+
+        AVLDtorOneNode(node);
+
+        retNode = replacingNode;
     }
 
-    AVLDtorOneNode(node);
+    UpdateHeights(retNode);
+    retNode = AVLRotate(retNode);
 
-    return replacingNode;
+    return retNode;
 }
 
 void AVLDelete(AVL* tree, int key)
 {
     assert(tree);
-    
+    assert(tree->root);
+
     tree->root = AVLDeleteNode(tree->root, key);
+}
+
+static inline AVLNode* UntieMaxNode(AVLNode* root, AVLNode** maxNode)
+{
+    assert(root);
+    assert(maxNode);
+
+    if (root->right)
+        root->right = UntieMaxNode(root->right, maxNode);
+    else
+    {
+        *maxNode = root;
+        
+        AVLNode* retNode = root->left;
+        root->left = NULL;
+
+        return retNode;
+    }
+
+    UpdateHeights(root);
+    root = AVLRotate(root);
+
+    return root;
 }

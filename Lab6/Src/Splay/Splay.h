@@ -25,11 +25,13 @@ typedef struct SplayNodesPair
 SplayTree SplayTreeCtor();
 SplayNode* SplayNodeCtor(const int key);
 void SplayOneNodeDtor(SplayNode* node);
-void SplayDtor(SplayNode* node);
+void SplaySubtreeDtor(SplayNode* node);
+
+void SplayTreeDtor(SplayTree* tree);
 
 SplayNodesPair SplayNodesPairCtor(SplayNode* node1, SplayNode* node2);
 
-void Insert(SplayTree* tree, const int key);
-void Delete(SplayTree* tree, const int key);
+void SplayInsert(SplayTree* tree, const int key);
+void SplayDelete(SplayTree* tree, const int key);
 
 #endif

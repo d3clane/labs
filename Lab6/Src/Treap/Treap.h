@@ -1,6 +1,8 @@
 #ifndef TREAP_H
 #define TREAP_H
 
+#include <stdbool.h>
+
 typedef struct TreapNode
 {
     int key;
@@ -21,7 +23,8 @@ void       TreapNodeDtor(TreapNode* node);
 Treap TreapCtor();
 void  TreapDtor(Treap* tree);
 
-void Insert(Treap* treap, int key);
-void Delete(Treap* treap, int key);
+void TreapInsert(Treap* treap, int key);
+void TreapDelete(Treap* treap, int key);
+bool TreapExist (Treap* treap, int key);
 
 #endif

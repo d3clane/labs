@@ -25,8 +25,8 @@ static void TreapDtorRecursively(TreapNode* node);
 static TreapNodesPair Split(TreapNode* tree, int key);
 static TreapNode* Merge(TreapNode* tree1, TreapNode* tree2);
 
-void Insert(Treap* treap, int key);
-void Delete(Treap* treap, int key);
+void TreapInsert(Treap* treap, int key);
+void TreapDelete(Treap* treap, int key);
 
 static inline TreapNodesPair TreapNodesPairCtor(TreapNode* node1, TreapNode* node2)
 {
@@ -102,6 +102,7 @@ static TreapNodesPair Split(TreapNode* tree, int key)
         return TreapNodesPairCtor(NULL, NULL);
 
     TreapNodesPair pair = {};
+
     if (key < tree->key)
     {
         pair = Split(tree->leftSon, key);
@@ -131,17 +132,19 @@ static TreapNode* Merge(TreapNode* tree1, TreapNode* tree2)
     }
 }
 
-void Insert(Treap* treap, int key)
+void TreapInsert(Treap* treap, int key)
 {
     assert(treap);
 
+    if (TreapExist(treap, key))
+        return;
+        
     TreapNodesPair pair = Split(treap->root, key);
+
     treap->root = Merge(Merge(pair.node1, TreapNodeCtor(key)), pair.node2);
 }
 
-
-
-void Delete(Treap* treap, int key)
+void TreapDelete(Treap* treap, int key)
 {
     assert(treap);
 
@@ -177,3 +180,25 @@ void Delete(Treap* treap, int key)
     TreapNodeDtor(deleteNode);
 }
 
+bool TreapExist (Treap* treap, int key)
+{
+    assert(treap);
+
+    if (treap->root == NULL)
+        return false;
+
+    TreapNode* node = treap->root;
+
+    while (node && node->key != key)
+    {
+        if (key < node->key)
+            node = node->leftSon;
+        else 
+            node = node->rightSon;
+    }
+
+    if (node == NULL)
+        return false;
+
+    return true;
+}

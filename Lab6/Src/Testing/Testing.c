@@ -9,92 +9,85 @@
 
 static inline void ReadFromFile(FILE* inStream, int* arr, size_t arrSize);
 
+volatile TreeType tmp = {};
+
 void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
-              const char* testsInsertsResFileName, const char* testsDeletesResFileName,
+              const char* testsInsertsResFile, const char* testsDeletesResFile,
               size_t fromIns, size_t toIns, size_t stepIns, size_t numberOfTestsIns,
-              size_t fromDel, size_t toDel, size_t stepDel, size_t numberOfTestsDel,
               TreeType (*Ctor)(), void (*Dtor)(TreeType* tree),
               void (*Insert)(TreeType* tree, int key), 
               void (*Delete)(TreeType* tree, int key))
 {
     #define MAX_FILE_NAME_SIZE 256
 
-    static char inFileName[MAX_FILE_NAME_SIZE] = "";
+    static char inFileName[MAX_FILE_NAME_SIZE]  = "";
 
-    int* arr = (int*)calloc(toIns, sizeof(*arr));
-    assert(arr);
-    
-    FILE* outStream = fopen(testsInsertsResFileName, "w");
-    assert(outStream);
+    int* arrIns = (int*)calloc(toIns, sizeof(*arrIns));
+    assert(arrIns);
+    int* arrDel = (int*)calloc(toIns / 2, sizeof(*arrDel));
+    assert(arrDel);
 
-    TreeType tree = Ctor();
+    FILE* outStreamIns = fopen(testsInsertsResFile, "w");
+    assert(outStreamIns);
+
+    FILE* outStreamDel = fopen(testsDeletesResFile, "w");
+    assert(outStreamDel);
 
     for (size_t arrSize = fromIns; arrSize <= toIns; arrSize += stepIns)
     {
-        double averageTime = 0;
+        fprintf(stderr, "size - %zu\n", arrSize);
 
-        snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu.in",  testsInsertsDir, arrSize);
-        FILE* inStream = fopen(inFileName, "r");
-        assert(inStream);
-
-        ReadFromFile(inStream, arr, arrSize);
+        double averageInsTime = 0;
+        double averageDelTime = 0;
 
         for (size_t k = 1; k <= numberOfTestsIns; ++k)
         {
+            snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  testsInsertsDir, arrSize, k);
+            FILE* inStreamIns = fopen(inFileName, "r");
+            assert(inStreamIns);
+            
+            ReadFromFile(inStreamIns, arrIns, arrSize);
+
+            snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  testsDeleteDir, arrSize / 2, k);
+            FILE* inStreamDel = fopen(inFileName, "r");
+            assert(inStreamDel);
+
+            ReadFromFile(inStreamDel, arrDel, arrSize / 2);
+
+            TreeType tree = Ctor();
+
             clock_t insertTime = clock();
-
             for (size_t i = 0; i < arrSize; ++i)
-                Insert(&tree, arr[i]);
-
+                Insert(&tree, arrIns[i]);
             insertTime = clock() - insertTime;
-            averageTime += (double)insertTime / CLOCKS_PER_SEC;
-        }
-
-        averageTime /= numberOfTestsIns;
-        
-        fclose(inStream);
-
-        fprintf(outStream, "%zu %.15lf\n", arrSize, averageTime);
-    }
-
-    free(arr);
-    fclose(outStream);
-
-    arr = (int*)calloc(toDel, sizeof(*arr));
-    assert(arr);
     
-    FILE* outStream = fopen(testsDeletesResFileName, "w");
-    assert(outStream);
+            averageInsTime += (double)insertTime / CLOCKS_PER_SEC;
 
-    for (size_t arrSize = fromDel; arrSize <= toDel; arrSize += stepDel)
-    {
-        double averageTime = 0;
-
-        snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu.in",  testsDeleteDir, arrSize);
-        FILE* inStream = fopen(inFileName, "r");
-        assert(inStream);
-
-        ReadFromFile(inStream, arr, arrSize);
-
-        for (size_t k = 1; k <= numberOfTestsDel; ++k)
-        {
             clock_t delTime = clock();
-
-            for (size_t i = 0; i < arrSize; ++i)
-                Delete(&tree, arr[i]);
-
+            for (size_t i = 0; i < arrSize / 2; ++i)
+                Delete(&tree, arrDel[i]);
             delTime = clock() - delTime;
-            averageTime += (double)delTime / CLOCKS_PER_SEC;
+
+            averageDelTime += (double)delTime / CLOCKS_PER_SEC;
+
+            tmp.root = tree.root;
+            Dtor(&tree);
+
+            fclose(inStreamIns);
+            fclose(inStreamDel);
         }
 
-        averageTime /= numberOfTestsIns;
+        averageInsTime /= numberOfTestsIns;
+        averageDelTime /= numberOfTestsIns;
         
-        fclose(inStream);
-
-        fprintf(outStream, "%zu %.15lf\n", arrSize, averageTime);
+        fprintf(outStreamIns, "%zu %.15lf\n", arrSize, averageInsTime);
+        fprintf(outStreamDel, "%zu %.15lf\n", arrSize / 2, averageDelTime);
     }
 
-    Dtor(&tree);
+    fclose(outStreamIns);
+    fclose(outStreamDel);
+    free(arrIns);
+    free(arrDel);
 
     #undef MAX_FILE_NAME_SIZE
 }
