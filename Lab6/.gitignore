@@ -1,0 +1,5 @@
+build/
+generate
+stdQsort
+Tests/Tests/
+.DS_Store
