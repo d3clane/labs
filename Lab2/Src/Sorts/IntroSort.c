@@ -1,5 +1,6 @@
 #include <math.h>
 
+#include "Common/Common.h"
 #include "IntroSort.h"
 #include "QuadraticSorts.h"
 #include "HeapSort.h"
@@ -9,8 +10,6 @@ static void IntroSortCall(int* arr, const size_t left, const size_t right,
                                                                             size_t depth);
 
 static size_t Partition(int* arr, size_t left, size_t right);
-
-static inline void Swap(int* val1, int* val2);
 
 void IntroSortTestConstant(int* arr, const size_t arrSize, double recursionDepthConstant)
 {
@@ -72,12 +71,4 @@ static size_t Partition(int* arr, size_t left, size_t right)
     }
 
     return right;    
-}
-
-static inline void Swap(int* val1, int* val2)
-{
-    int tmp = *val1;
-
-    *val1 = *val2;
-    *val2 = tmp;
 }

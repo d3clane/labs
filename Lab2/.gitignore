@@ -4,3 +4,7 @@ small_tests/
 test_most_duplicates/
 very_small_tests/
 .vscode
+tester
+stdQSort
+generate
+.DS_Store

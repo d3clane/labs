@@ -1,6 +1,5 @@
+#include "Common/Common.h"
 #include "QuadraticSorts.h"
-
-static inline void Swap(int* val1, int* val2);
 
 void BubbleSort   (int* arr, const size_t arrSize)
 {
@@ -69,11 +68,4 @@ void ShellSort    (int* arr, const size_t arrSize)
             arr[j] = valueToMove;
         }
     }
-}
-
-static inline void Swap(int* val1, int* val2)
-{
-    int tmp = *val1;
-              *val1 = *val2;
-                      *val2 = tmp;
 }

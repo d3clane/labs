@@ -1,13 +1,12 @@
-#include "Qsorts.h"
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+#include "Common/Common.h"
+
 static inline int QsortStdCmp(const void* value1, const void* value2);
 
-static inline void Swap(int* val1, int* val2);
 static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right);
 static inline int ChoosePivotRnd        (int* arr, size_t left, size_t right);
 static inline int ChoosePivotMedian3    (int* arr, size_t left, size_t right);
@@ -236,13 +235,6 @@ static void   PartitionTernary(int* arr, size_t left, size_t right,
 
     *equalPartBeginPos = left;
     *equalPartEndPos   = right;
-}
-
-static inline void Swap(int* val1, int* val2)
-{
-    int temp = *val1;
-    *val1    = *val2;
-    *val2    = temp;
 }
 
 static inline int ChoosePivotCenter     (int* arr, size_t left, size_t right)

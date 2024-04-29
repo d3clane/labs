@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "Common/Common.h"
 #include "Heap.h"
 
 #define NO_NODE_FOUND -1
@@ -10,7 +11,6 @@ static void HeapSiftDown(Heap* heap, size_t valPos);
 
 static inline int HeapGetMaxSonPos(const Heap* heap, size_t valPos);
 
-static inline void   Swap(int*   val1, int*   val2);
 static inline size_t Min (size_t val1, size_t val2);
 
 Heap HeapCtor(size_t heapSize, size_t heapRank)
@@ -67,15 +67,18 @@ Heap* HeapDtor(Heap* heap)
 int HeapExtractMax  (Heap* heap)
 {
     assert(heap);
+    assert(heap->heapCapacity >= 1);
+    assert(heap->heapData);
 
-    int MaxVal = HeapGetMax(heap);
+    int maxVal = heap->heapData[0];
+    
     heap->dataEndPos--;
 
     heap->heapData[0] = heap->heapData[heap->dataEndPos];
 
     HeapSiftDown(heap, 0);
 
-    return MaxVal;
+    return maxVal;
 }
 
 static void HeapSiftDown(Heap* heap, size_t valPos)
@@ -112,16 +115,6 @@ static inline int HeapGetMaxSonPos(const Heap* heap, size_t valPos)
     }
 
     return (int)maxSonPos;
-}
-
-static inline void Swap(int* val1, int* val2)
-{
-    assert(val1);
-    assert(val2);
-    
-    int tmp = *val1;
-    *val1 = *val2;
-    *val2 = tmp;
 }
 
 static inline size_t  Min (size_t val1, size_t val2)
