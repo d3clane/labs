@@ -7,7 +7,7 @@ int main()
 {
     const char* testsInsertsDir       = "Tests/Tests/Inserts";
     const char* testsDeletesDir       = "Tests/Tests/Deletes";
-    const char* testsDeletesSortedDIr = "Tests/Tests/Sorted";
+    const char* testsSortedDir        = "Tests/Tests/Sorted";
 
 #define BST_DIR "BST/"
 #define AVL_DIR "AVL/"
@@ -25,19 +25,19 @@ int main()
              TESTS_RES_DIR BST_DIR DELETES_DIR, 
              100000, 100000, 1, 5, BSTCtor, BSTDtor, BSTInsert, BSTDelete);
 
-    //TestTree(testsInsertsDir, testsDeletesSortedDIr, TESTS_RES_DIR BST_DIR INSERTS_DIR,
-    //         TESTS_RES_DIR BST_DIR SORTED_DIR, 
-    //         100000, 100000, 1, 5, 1000000, 1000000, 1, 5, BSTCtor, BSTDtor, BSTInsert, BSTDelete);
+    TestTree("Tests/Tests/Sorted/Inserts", "Tests/Tests/Sorted/Deletes", 
+             TESTS_RES_DIR BST_DIR "SortedIns.out", TESTS_RES_DIR BST_DIR "SortedDel.out", 
+             100000, 100000, 1, 5, BSTCtor, BSTDtor, BSTInsert, BSTDelete);
 #elif TREE_TYPE == AVL_TYPE
     TestTree(testsInsertsDir, testsDeletesDir, TESTS_RES_DIR AVL_DIR INSERTS_DIR,
              TESTS_RES_DIR AVL_DIR DELETES_DIR, 
              100000, 1000000, 100000, 5, 
              AVLCtor, AVLDtor, AVLInsert, AVLDelete);
 
-    //TestTree(testsInsertsDir, testsDeletesSortedDIr, TESTS_RES_DIR AVL_DIR INSERTS_DIR,
-    //         TESTS_RES_DIR AVL_DIR SORTED_DIR, 
-    //         100000, 1000000, 100000, 5, 
-    //         50000, 500000, 50000, 5, AVLCtor, AVLDtor, AVLInsert, AVLDelete);
+    TestTree("Tests/Tests/Sorted/Inserts", "Tests/Tests/Sorted/Deletes",
+             TESTS_RES_DIR AVL_DIR "SortedIns.out", TESTS_RES_DIR AVL_DIR "SortedDel.out", 
+             1000000, 1000000, 1, 5, 
+             AVLCtor, AVLDtor, AVLInsert, AVLDelete);
 #elif TREE_TYPE == TREAP_TYPE
     TestTree(testsInsertsDir, testsDeletesDir, TESTS_RES_DIR TREAP_DIR INSERTS_DIR,
             TESTS_RES_DIR TREAP_DIR DELETES_DIR, 

@@ -3,14 +3,18 @@
 from=$1
 to=$2
 step=$3
-maxVal=$4
-testsDir=$5
+numberOfTests=$4
+maxVal=$5
+testsDir=$6
 
 generate="./generate"
 stdQSort="./stdQSort"
 
 for ((size=from; size<=to; size+=step)); do
-        $generate $size $maxVal > "$testsDir/${size}.tmp"
+        for ((k = 1; k <= numberOfTests; k += 1)); do
+                $generate $size $maxVal >  "$testsDir/${size}_${k}.tmp"
+                $stdQSort $size < "$testsDir/${size}_${k}.tmp" > "$testsDir/${size}_${k}.in"
 
-        $stdQSort $size < "$testsDir/${size}.tmp" > "$testsDir/${size}.in"
+                rm -rf $testsDir/${size}_${k}.tmp
+        done
 done

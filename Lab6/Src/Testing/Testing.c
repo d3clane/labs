@@ -20,11 +20,13 @@ void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
 {
     #define MAX_FILE_NAME_SIZE 256
 
+    static const size_t delSizeCoeff = 2;
+
     static char inFileName[MAX_FILE_NAME_SIZE]  = "";
 
     int* arrIns = (int*)calloc(toIns, sizeof(*arrIns));
     assert(arrIns);
-    int* arrDel = (int*)calloc(toIns / 2, sizeof(*arrDel));
+    int* arrDel = (int*)calloc(toIns / delSizeCoeff, sizeof(*arrDel));
     assert(arrDel);
 
     FILE* outStreamIns = fopen(testsInsertsResFile, "w");
@@ -48,11 +50,12 @@ void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
             
             ReadFromFile(inStreamIns, arrIns, arrSize);
 
-            snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  testsDeleteDir, arrSize / 2, k);
+            snprintf(inFileName,  MAX_FILE_NAME_SIZE, "%s/%zu_%zu.in",  testsDeleteDir, 
+                     arrSize / delSizeCoeff, k);
             FILE* inStreamDel = fopen(inFileName, "r");
             assert(inStreamDel);
 
-            ReadFromFile(inStreamDel, arrDel, arrSize / 2);
+            ReadFromFile(inStreamDel, arrDel, arrSize / delSizeCoeff);
 
             TreeType tree = Ctor();
 
@@ -64,7 +67,7 @@ void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
             averageInsTime += (double)insertTime / CLOCKS_PER_SEC;
 
             clock_t delTime = clock();
-            for (size_t i = 0; i < arrSize / 2; ++i)
+            for (size_t i = 0; i < arrSize / delSizeCoeff; ++i)
                 Delete(&tree, arrDel[i]);
             delTime = clock() - delTime;
 
@@ -81,7 +84,7 @@ void TestTree(const char* testsInsertsDir, const char* testsDeleteDir,
         averageDelTime /= numberOfTestsIns;
         
         fprintf(outStreamIns, "%zu %.15lf\n", arrSize, averageInsTime);
-        fprintf(outStreamDel, "%zu %.15lf\n", arrSize / 2, averageDelTime);
+        fprintf(outStreamDel, "%zu %.15lf\n", arrSize / delSizeCoeff, averageDelTime);
     }
 
     fclose(outStreamIns);
