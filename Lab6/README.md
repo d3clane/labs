@@ -58,6 +58,6 @@
 
 Сравним Splay, Treap и AVL. Для вставок:
 
-![SPA INSERT](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/SPA_Inserts.png)
+![SPA INSERT](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/SPA_INSERTS.png)
 
 
