@@ -19,7 +19,40 @@
 
 Вставки:
 
+![AVL INSERTS](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/AVL_Inserts.png)
 
 Удаления:
 
-Время работы для отсортированной последовательности: 
+![AVL DELETES](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/AVL_Deletes.png)
+
+Время работы для отсортированной последовательности из 1млн вставок и 500к удалений:
+
+|             |              |
+|:---:        | :---:        |
+| Вставка     | 0.0910926    |
+| Удаление    | 0.0554774    |
+
+Вообще, работает дольше, чем вставки / удаления случайных. Возможно, из-за того, что в случае отсортированной последовательности балансировка дерева (ротейты) происходит чаще, то есть операций выходит больше на это. Но все равно это не O(n^2), так как дерево всегда балансируется и его высота O(logn). 
+
+## Декартово дерево
+
+Вставки:
+
+![TREAP INSERTS](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/TREAP_Inserts.png)
+
+Удаления:
+
+![TREAP DELETES](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/TREAP_Deletes.png)
+
+## Splay дерево
+
+Вставки:
+
+![SPLAY INSERTS](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/SPLAY_Inserts.png)
+
+Удаления:
+
+![SPLAY DELETES](https://github.com/d3clane/labs/blob/Lab6/Lab6/ReadmeAssets/imgs/SPLAY_Deletes.png)
+
+## Выводы
+

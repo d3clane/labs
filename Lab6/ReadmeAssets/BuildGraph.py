@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-data1 = np.loadtxt('TestsResults/AVL/Deletes.out', delimiter=' ')
+data1 = np.loadtxt('TestsResults/Splay/Deletes.out', delimiter=' ')
 x1, y1 = data1[:, 0], data1[:, 1]
 
 plt.figure()
@@ -12,4 +12,4 @@ plt.ylabel('time')
 plt.grid(True)
 plt.legend()
 
-plt.savefig('ReadmeAssets/imgs/AVL_Deletes.png')
+plt.savefig('ReadmeAssets/imgs/SPLAY_Deletes.png')
