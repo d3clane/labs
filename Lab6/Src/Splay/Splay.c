@@ -226,20 +226,13 @@ static SplayNode* Merge(SplayNode* tree1, SplayNode* tree2)
     if (tree1 == NULL)
         return tree2;
     
-    // fprintf(stderr, "MAX NODE GET BEGIN\n");
+    
     SplayNode* maxNode = GetMaxNode(tree1);
-    // fprintf(stderr, "MAX NODE GET END\n");
+    
     Splay(maxNode);
-
-    // fprintf(stderr, "SPLAY END\n");
 
     assert(maxNode);
     assert(maxNode->right != maxNode);
-    if (maxNode->right != NULL)
-    {
-        // fprintf(stderr, "MY VAL - %d, right val - %d\n", maxNode->key, maxNode->right->key);
-    }
-    
     assert(maxNode->right == NULL);
 
     maxNode->right  = tree2;
@@ -272,9 +265,9 @@ void SplayInsert(SplayTree* tree, const int key)
     
     if (pair.node1 && pair.node1->key == key)
     {
-        // fprintf(stderr, "MERGE START\n");
+        
         tree->root = Merge(pair.node1, pair.node2);
-        // fprintf(stderr, "MERGE END\n");
+        
         return;
     }
 
@@ -295,8 +288,7 @@ void SplayDelete(SplayTree* tree, const int key)
 
     SplayNode* prevNode = NULL;
     SplayNode* node     = tree->root;
-
-    // fprintf(stderr, "WHILE START\n");
+    
     while (node && node->key != key)
     {
         prevNode = node;
@@ -307,11 +299,7 @@ void SplayDelete(SplayTree* tree, const int key)
             node = node->left;
         else
             node = node->right;
-
-        //// fprintf(stderr, "WHILE STEP\n");
     }
-
-    // fprintf(stderr, "WHILE END\n");
 
     if (node == NULL)
     {
@@ -319,23 +307,14 @@ void SplayDelete(SplayTree* tree, const int key)
 
         return;
     }
-
-    // fprintf(stderr, "START SPLAY\n");
     
     Splay(node);
 
-    // fprintf(stderr, "SPLAY END\n");
-
     assert(node);
-
-    // fprintf(stderr, "START MERGE\n");
 
     if (node->left)  node->left->parent = NULL;
     if (node->right) node->right->parent = NULL;
     tree->root = Merge(node->left, node->right);
-    // fprintf(stderr, "MERGE END\n");
-
-    // fprintf(stderr, "DTOR START\n");
+    
     SplayOneNodeDtor(node);
-    // fprintf(stderr, "DTOR END\n");
 }
