@@ -56,3 +56,6 @@
 
 ## Выводы
 
+Сравним Splay, Treap и AVL. Для вставок:
+
+![AVL SPLAY TREAP INSERTS]
