@@ -311,7 +311,7 @@ void SplayDelete(SplayTree* tree, const int key)
     Splay(node);
 
     assert(node);
-
+ 
     if (node->left)  node->left->parent = NULL;
     if (node->right) node->right->parent = NULL;
     tree->root = Merge(node->left, node->right);
