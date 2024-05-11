@@ -1,0 +1,6 @@
+build/
+generate
+tester
+TestsResults/
+Tests/BinaryHeapTests
+
