@@ -293,7 +293,7 @@ static inline void EatLine()
     }
 }
 
-void ProcessAVLQueries()
+void ProcessAVLQueries(AVL* tree)
 {
     size_t n = 0;
     int scanfRes = scanf("%zu", &n);
@@ -301,12 +301,9 @@ void ProcessAVLQueries()
 
     EatLine();
 
-    AVL tree = AVLCtor();
-
     int prevRes = 0;
 
-    srand(clock());
-
+    static const int insertedValueMod = (int)1e9;
     while (n--)
     {
         char queryType = 0;
@@ -318,12 +315,12 @@ void ProcessAVLQueries()
         switch (queryType)
         {
             case '+':
-                AVLInsert(&tree, (speed + prevRes) % (int)1e9);
+                AVLInsert(tree, (speed + prevRes) % insertedValueMod);
                 prevRes = 0;
                 break;
             case '?':
             {
-                AVLNode* tmp = AVLNext(&tree, speed);
+                AVLNode* tmp = AVLNext(tree, speed);
 
                 if (tmp == NULL)
                     prevRes = -1;
@@ -342,10 +339,13 @@ void ProcessAVLQueries()
         EatLine();
     }
 
-    AVLDtor(&tree);
 }
 
 int main()
 {
-    ProcessAVLQueries();
+    AVL tree = AVLCtor();
+
+    ProcessAVLQueries(&tree);
+
+    AVLDtor(&tree);
 }
