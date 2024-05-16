@@ -287,33 +287,29 @@ TreapNode* KthNode(Treap* treap, size_t k)
     return KthNodeRecursiveCall(treap->root, k + 1);
 }
 
-void ProcessTreapQueries()
+void ProcessTreapQueries(Treap* treap)
 {
 #define MAX_COMMAND_LEN 20
-#define MAX_COMMAND_LEN_FORMAT_STR "19"
-
-    srand(15);
-
-    Treap treap = TreapCtor();
+#define MAX_COMMAND_LEN_FORMAT_STR "%19s"
 
     char command[MAX_COMMAND_LEN] = "";
     int val = 0;
-    while (scanf("%" MAX_COMMAND_LEN_FORMAT_STR "s%d", command, &val) != EOF)
+    while (scanf(MAX_COMMAND_LEN_FORMAT_STR "%d", command, &val) != EOF)
     {
         if (strcmp(command, "insert") == 0)
-            Insert(&treap, val);
+            Insert(treap, val);
         else if (strcmp(command, "delete") == 0)
-            Delete(&treap, val);
+            Delete(treap, val);
         else if (strcmp(command, "exists") == 0)
         {
-            if (Exist(&treap, val))
+            if (Exist(treap, val))
                 printf("true\n");
             else
                 printf("false\n");
         }
         else if (strcmp(command, "next") == 0)
         {
-            TreapNode* next = Next(&treap, val);
+            TreapNode* next = Next(treap, val);
 
             if (next == NULL)
                 printf("none\n");
@@ -322,7 +318,7 @@ void ProcessTreapQueries()
         }
         else if (strcmp(command, "prev") == 0)
         {
-            TreapNode* prev = Prev(&treap, val);
+            TreapNode* prev = Prev(treap, val);
 
             if (prev == NULL)
                 printf("none\n");
@@ -331,7 +327,7 @@ void ProcessTreapQueries()
         }
         else if (strcmp(command, "kth")  == 0)
         {
-            TreapNode* kthNode = KthNode(&treap, val);
+            TreapNode* kthNode = KthNode(treap, val);
 
             if (kthNode == NULL)
                 printf("none\n");
@@ -340,13 +336,17 @@ void ProcessTreapQueries()
         }
     }
 
-    TreapDtor(&treap);
-
 #undef MAX_COMMAND_LEN
 #undef MAX_COMMAND_LEN_FORMAT_STR    
 }
 
 int main()
 {
-    ProcessTreapQueries();
+    srand(15);
+
+    Treap treap = TreapCtor();
+
+    ProcessTreapQueries(&treap);
+
+    TreapDtor(&treap);
 }
