@@ -66,7 +66,6 @@ int main()
 
     //------------------------Hash table-----------------------------
 
-/*
 #define OUT_DIR "TestsResults/LoadFactor/LoadFactor"
 
     float maxLoadFactor  = 0.9;
@@ -125,5 +124,4 @@ int main()
            TestTablesSearches("Tests/SearchesTest/Inserts/100000.in", 
                               "Tests/SearchesTest/Search/10000000.in",
                               100000, 10000000));
-*/
 }
