@@ -31,7 +31,7 @@ HashTableElem HashTableElemCtor()
     HashTableElem elem = 
     {
         .key   = 0,
-        .value = false,
+        .isFree = true,
 
         .isDel = false,
     };
@@ -43,8 +43,8 @@ HashTableElem HashTableElemInit(int key)
 {
     HashTableElem elem = 
     {
-        .key = key,
-        .value = true,
+        .key    = key,
+        .isFree = false,
 
         .isDel = false,
     };
@@ -56,9 +56,9 @@ void HashTableElemDtor(HashTableElem* elem)
 {
     assert(elem);
 
-    elem->isDel = false;
-    elem->key   = 0;
-    elem->value = 0;
+    elem->isDel  = false;
+    elem->key    = 0;
+    elem->isFree = true;
 }
 
 HashTableType* HashTableCtor(size_t capacity, HashFuncType HashFunc, float loadFactor)
@@ -105,7 +105,7 @@ void HashTableInsert(HashTableType* table, const int key)
     assert(elem);
     assert(elem->isDel == false);
     
-    if (elem->value == true)
+    if (elem->isFree == false)
         return;
 
     *elem = HashTableElemInit(key);
@@ -125,11 +125,10 @@ void HashTableErase     (HashTableType* table, const int key)
     assert(elem);
     assert(elem->isDel == false);
     
-    if (elem->value == false)
+    if (elem->isFree == true)
         return;
 
-    elem->isDel = true;
-    elem->value = false;
+    elem->isDel  = true;
 
     table->dataDelSize++;
 
@@ -144,7 +143,7 @@ bool HashTableGetValue  (HashTableType* table, const int key)
     assert(elem);
     assert(elem->isDel == false);
     
-    return elem->value;
+    return !elem->isFree;    // свободная клетка титтк ничего не нашлось. 
 }
 
 static HashTableElem* HashTableFindElemPlace(HashTableType* table, const int key)
@@ -168,7 +167,7 @@ static HashTableElem* HashTableFindElemPlace(HashTableType* table, const int key
         assert(probePos < table->dataCapacity);
 
         if (!table->data[probePos].isDel && 
-            (table->data[probePos].key == key || table->data[probePos].value == false))
+            (table->data[probePos].key == key || table->data[probePos].isFree == true))
             return table->data + probePos;
 
     #if PROBE_FUNC == LINEAR
@@ -285,14 +284,14 @@ static void HashTableDataMoveElem(HashTableType* newTable, HashTableElem* elem)
     if (elemToChange->key == elem->key)
         return;
 
-    assert(elem->value == true);
-    assert(elem->isDel == false);
-    assert(elemToChange->value == false);
-    assert(elemToChange->isDel == false);
+    assert(elem->isFree == false);
+    assert(elem->isDel  == false);
+    assert(elemToChange->isFree == true);
+    assert(elemToChange->isDel  == false);
 
-    elemToChange->key   = elem->key;
-    elemToChange->value = elem->value;
-    elemToChange->isDel = elem->isDel;
+    elemToChange->key    = elem->key;
+    elemToChange->isFree = elem->isFree;
+    elemToChange->isDel  = elem->isDel;
 }
 
 #endif

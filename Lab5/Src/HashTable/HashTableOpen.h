@@ -13,7 +13,7 @@ typedef struct
 {
     int key;
 
-    bool value;
+    bool isFree;
 
     bool isDel;
 } HashTableElem;
