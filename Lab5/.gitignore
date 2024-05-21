@@ -1,0 +1,15 @@
+build/
+Tests/FloatHash
+Tests/IntHash
+Tests/StrHash
+Ops1/
+Ops2/
+SearchesTest/
+TestsResults/
+tester
+*.DS_Store
+.vscode
+generate
+generate2
+generate3
+generate5
